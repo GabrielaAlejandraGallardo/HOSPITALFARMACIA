@@ -15,7 +15,7 @@
         <tbody>
             {% for deposito in depositos %}
             <tr>
-                <td>{{ deposito.id }}</td>
+                <td>{{ deposito.id_deposito }}</td>
                 <td>{{ deposito.descripcion }}</td>
                 <td>
                     <a class="btn btn-outline-primary" href="{% url 'eliminacion_deposito' deposito.id_deposito %}">
