@@ -21,8 +21,6 @@ def inicio(request):
 
 
 # funciones para deposito
-def lista_deposito(request):
-    Deposito
 
 
 def lista_deposito(request):

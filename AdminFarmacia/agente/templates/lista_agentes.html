@@ -23,9 +23,20 @@
                 <td>{{ agente.contacto }}</td>
                 <td>{{ agente.id_especialidad }}</td>
                 <td>{{ agente.email }}</td>
+                  <td>
+                    <a class="btn btn-outline-primary" href="{% url 'eliminacion_agente' agente.id_agente %}">
+                        Eliminar
+                    </a>
+                    <a class="btn btn-outline-primary" href="{% url 'modificaciones_agente' agente.id_agente %}">
+                        Modificar
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <a class="btn btn-primary" href="{% url 'alta_agentes' %}">Agregar Agente</a>
+</div>
 {% endblock contenido %}
 

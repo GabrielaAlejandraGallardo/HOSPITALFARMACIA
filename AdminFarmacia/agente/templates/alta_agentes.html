@@ -1,0 +1,30 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Alta de Agentes {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-primary text-white p-4 rounded">
+    <h1>Alta de Agentes </h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre_apellido" class="form-label">Nombre y Apellido:</label>
+            <input type="text" class="form-control" id="nombre_apellido" name="nombre_apellido" required>
+        </div>
+        <div class="mb-3">
+            <label for="dni" class="form-label">DNI:</label>
+            <input type="text" class="form-control" id="dni" name="dni" required>
+            <label for="contacto" class="form-label">Contacto:</label>
+            <input type="text" class="form-control" id="contacto" name="contacto" required>
+            <label for="id_especialidad" class="form-label">Especialidad:</label>
+            <input type="text" class="form-control" id="id_especialidad" name="id_especialidad" required>
+            <label for="email" class="form-label">Email:</label>    
+            <input type="email" class="form-control" id="email" name="email" required>  
+
+        </div>
+         <button><a href="/agentes/lista_agentes">volver</a></button>
+
+
+
+    </form>
+</div>
+{% endblock contenido %}
