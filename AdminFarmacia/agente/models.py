@@ -13,7 +13,7 @@ class Agente(models.Model):
     dni=models.IntegerField(unique=True)
     nombre_apellido = models.CharField(max_length=100)
     contacto = models.CharField(max_length=100)
-    id_especialidad = models.ForeignKey('Especialidad', on_delete=models.CASCADE)
+    id_especialidad = models.ForeignKey(Especialidad, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
 
     def __str__(self):
