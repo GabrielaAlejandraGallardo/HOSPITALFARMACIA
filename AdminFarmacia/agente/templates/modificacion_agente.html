@@ -13,14 +13,25 @@
         <div class="mb-3">
             <label for="dni" class="form-label">DNI:</label>
             <input type="text" class="form-control" id="dni" name="dni" value="{{ agente.dni }}" required>
+
             <label for="contacto" class="form-label">Contacto:</label>
             <input type="text" class="form-control" id="contacto" name="contacto" value="{{ agente.contacto }}" required>
+
             <label for="id_especialidad" class="form-label">Especialidad:</label>
-            <input type="text" class="form-control" id="id_especialidad"    name="id_especialidad" value="{{ agente.id_especialidad }}" required>
-            <label for="email" class="form-label">Email:</label>            
+            <select class="form-control" id="id_especialidad" name="id_especialidad" required>
+                {% for esp in especialidades %}
+                    <option value="{{ esp.id_especialidad }}" {% if esp.id_especialidad == agente.id_especialidad_id %}selected{% endif %}>
+                        {{ esp.nombre_especialidad }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="email" class="form-label">Email:</label>
             <input type="email" class="form-control" id="email" name="email" value="{{ agente.email }}" required>
         </div>
-         <button><a href="/agentes/lista_agentes">volver</a></button>
+
+        <button><a href="/agentes/lista_agentes">volver</a></button>
     </form>
 </div>
 {% endblock contenido %}
+

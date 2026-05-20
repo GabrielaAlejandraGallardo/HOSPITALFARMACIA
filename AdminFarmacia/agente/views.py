@@ -5,12 +5,16 @@ from .models import Agente, Especialidad
 def inicio(request):
     return render(request, 'pagina_base/inicio.html')
 
+
 def lista_agentes(request):
     agentes = Agente.objects.all()
     return render(request, 'lista_agentes.html', {'agentes': agentes})
 
+
 def alta_agentes(request):
-    # No es necesario consultar todos los agentes para mostrar el formulario.
+    # Consultar especialidades para poder renderizar el <select>
+    especialidades = Especialidad.objects.all()
+
     if request.method == 'POST':
         dni = request.POST.get('dni')
         nombre_apellido = request.POST.get('nombre_apellido')
@@ -27,10 +31,10 @@ def alta_agentes(request):
                 email=email,
             )
             agente.save()
-            return render(request, 'alta_agentes.html', {'agente': agente})
+            return render(request, 'alta_agentes.html', {'agente': agente, 'especialidades': especialidades})
 
     # Importante: siempre devolver HttpResponse (evita que retorne None en GET o POST inválido)
-    return render(request, 'alta_agentes.html', {'agente': None})
+    return render(request, 'alta_agentes.html', {'agente': None, 'especialidades': especialidades})
 
 
 def eliminacion_agentes(request, id_agente):
@@ -40,10 +44,13 @@ def eliminacion_agentes(request, id_agente):
         agente.delete()
         return redirect('lista_agentes')
 
-    return render(request, 'eliminacion_agentes.html', {'agente': agente})  
+    return render(request, 'eliminacion_agentes.html', {'agente': agente})
+
 
 def modificaciones_agentes(request, id_agente):
-    agente=Agente.objects.get(id_agente=id_agente)
+    agente = Agente.objects.get(id_agente=id_agente)
+    especialidades = Especialidad.objects.all()
+
     if request.method == 'POST':
         dni = request.POST.get('dni')
         nombre_apellido = request.POST.get('nombre_apellido')
@@ -58,14 +65,24 @@ def modificaciones_agentes(request, id_agente):
             agente.id_especialidad_id = id_especialidad
             agente.email = email
             agente.save()
-            return redirect('lista_agentes')        
-    return render(request, 'modificaciones_agentes.html', {'agente': agente})   
+            return redirect('lista_agentes')
+
+    return render(
+        request,
+        'modificaciones_agentes.html',
+        {
+            'agente': agente,
+            'especialidades': especialidades,
+        },
+    )
+
 
 def lista_especialidades(request):
     especialidades = Especialidad.objects.all()
     return render(request, 'lista_especialidades.html', {'especialidades': especialidades})
 
-def alta_especialidades(request):   
+
+def alta_especialidades(request):
     if request.method == 'POST':
         nombre_especialidad = request.POST.get('nombre_especialidad')
 
@@ -75,3 +92,4 @@ def alta_especialidades(request):
             return render(request, 'alta_especialidades.html', {'especialidad': especialidad})
 
     return render(request, 'alta_especialidades.html', {'especialidad': None})
+
