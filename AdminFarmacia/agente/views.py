@@ -47,7 +47,7 @@ def eliminacion_agentes(request, id_agente):
     return render(request, 'eliminacion_agentes.html', {'agente': agente})
 
 
-def modificaciones_agentes(request, id_agente):
+def modificacion_agentes(request, id_agente):
     agente = Agente.objects.get(id_agente=id_agente)
     especialidades = Especialidad.objects.all()
 
@@ -69,27 +69,10 @@ def modificaciones_agentes(request, id_agente):
 
     return render(
         request,
-        'modificaciones_agentes.html',
+        'modificacion_agentes.html',
         {
             'agente': agente,
             'especialidades': especialidades,
         },
     )
-
-
-def lista_especialidades(request):
-    especialidades = Especialidad.objects.all()
-    return render(request, 'lista_especialidades.html', {'especialidades': especialidades})
-
-
-def alta_especialidades(request):
-    if request.method == 'POST':
-        nombre_especialidad = request.POST.get('nombre_especialidad')
-
-        if nombre_especialidad:  # Validación básica
-            especialidad = Especialidad(nombre_especialidad=nombre_especialidad)
-            especialidad.save()
-            return render(request, 'alta_especialidades.html', {'especialidad': especialidad})
-
-    return render(request, 'alta_especialidades.html', {'especialidad': None})
 

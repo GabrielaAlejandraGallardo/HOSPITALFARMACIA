@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('agente.urls')),
     path('',include('deposito.urls')),
+    path('',include('medicamento.urls')),
 ]

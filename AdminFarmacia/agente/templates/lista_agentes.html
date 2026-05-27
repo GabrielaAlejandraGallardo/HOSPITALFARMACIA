@@ -24,10 +24,10 @@
                 <td>{{ agente.id_especialidad }}</td>
                 <td>{{ agente.email }}</td>
                   <td>
-                    <a class="btn btn-outline-primary" href="{% url 'eliminacion_agente' agente.id_agente %}">
+                    <a class="btn btn-outline-primary" href="{% url 'eliminacion_agentes' agente.id_agente %}">
                         Eliminar
                     </a>
-                    <a class="btn btn-outline-primary" href="{% url 'modificaciones_agentes' agente.id_agente %}">
+                    <a class="btn btn-outline-primary" href="{% url 'modificacion_agentes' agente.id_agente %}">
                         Modificar
                     </a>
                 </td>

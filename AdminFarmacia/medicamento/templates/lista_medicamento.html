@@ -1,0 +1,59 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Lista de Medicamentos {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-white text-white p-4 rounded">
+    <h1>Lista de Medicamentos</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código Medicamento</th>
+                <th>Nombre</th>
+                <th>Fecha de Vencimiento</th>
+                <th>Lote</th>
+                <th>Fecha de Ingreso</th>
+                <th>Depósito</th>   
+                <th>Fecha de Dispensa</th>
+                <th>QR</th>
+                <th>Código de Barra</th>
+                <th>Estado</th>
+                <th>Refrigeración</th>
+                <th>Nivel de Riesgo</th>
+                <th>Cantidad en Stock</th>
+           
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicamento in medicamentos %}
+            <tr>
+                <td>{{ medicamento.id_medicamento }}</td>
+                <td>{{ medicamento.descripcion }}</td>
+                <td>{{ medicamento.fecha_vencimiento }}</td>
+                <td>{{ medicamento.lote }}</td>
+                <td>{{ medicamento.fecha_ingreso }}</td>
+                <td>{{ medicamento.deposito }}</td>
+                <td>{{ medicamento.fecha_dispensa }}</td>
+                <td>{{ medicamento.qr }}</td>
+                <td>{{ medicamento.codigo_barra }}</td>
+                <td>{{ medicamento.estado }}</td>
+                <td>{{ medicamento.refrigeracion }}</td>
+                <td>{{ medicamento.nivel_riesgo }}</td>
+                <td>{{ medicamento.cantidad_stock }}</td>
+
+                <td>
+                    <a class="btn btn-outline-primary" href="{% url 'eliminacion_medicamento' medicamento.id_medicamento %}">
+                        Eliminar
+                    </a>
+                    <a class="btn btn-outline-primary" href="{% url 'modificaciones_medicamento' medicamento.id_medicamento %}">
+                        Modificar
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{% url 'alta_medicamento' %}">Agregar Medicamento</a>
+</div>
+{% endblock contenido %}
