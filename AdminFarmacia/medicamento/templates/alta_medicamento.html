@@ -9,6 +9,13 @@
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción:</label>
             <input type="text" class="form-control" id="descripcion" name="description" required>
+            <label for="laboratorio" class="form-label">Laboratorio:</label>
+            <select class="form-select" id="laboratorio" name="laboratorio" required    >
+                <option value="">Seleccione un laboratorio</option>
+                {% for laboratorio in laboratorios %}
+                    <option value="{{ laboratorio.id_laboratorio }}">{{ laboratorio.descripcion }}</option>
+                {% endfor %}    
+            </select>
             <label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento:</label>
             <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
             <label for="lote" class="form-label">Lote:</label>      
@@ -50,11 +57,11 @@
 
         </div>
        
-
-    </form>
-      <button type="submit" class="btn btn-secondary color-white"><a href="/medicamento/lista_medicamento">volver</a></button>
+     <button type="submit" class="btn btn-secondary color-white"><a href="/medicamento/lista_medicamento">volver</a></button>
       <button type="submit" class="btn btn-dark" href="{% url 'lista_medicamento' %}">Guardar</button>
       <a class="btn btn-outline-dark" href="{% url 'lista_medicamento' %}">Cancelar</a>
+  
+    </form>
 
 
 </div>

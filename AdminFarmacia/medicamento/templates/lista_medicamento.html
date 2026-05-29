@@ -9,6 +9,7 @@
             <tr>
                 <th>Código Medicamento</th>
                 <th>Nombre</th>
+                <th>Laboratorio</th>
                 <th>Fecha de Vencimiento</th>
                 <th>Lote</th>
                 <th>Fecha de Ingreso</th>
@@ -28,24 +29,25 @@
             {% for medicamento in medicamentos %}
             <tr>
                 <td>{{ medicamento.id_medicamento }}</td>
-                <td>{{ medicamento.descripcion }}</td>
+                <td>{{ medicamento.description }}</td>
+                <td>{{ medicamento.laboratorio.descripcion}}</td>  
                 <td>{{ medicamento.fecha_vencimiento }}</td>
                 <td>{{ medicamento.lote }}</td>
                 <td>{{ medicamento.fecha_ingreso }}</td>
-                <td>{{ medicamento.deposito }}</td>
+                <td>{{ medicamento.id_deposito.descripcion }}</td>
                 <td>{{ medicamento.fecha_dispensa }}</td>
                 <td>{{ medicamento.qr }}</td>
-                <td>{{ medicamento.codigo_barra }}</td>
-                <td>{{ medicamento.estado }}</td>
+                <td>{{ medicamento.cod_barra }}</td>
+                <td>{{ medicamento.id_estado.descripcion }}</td>
                 <td>{{ medicamento.refrigeracion }}</td>
-                <td>{{ medicamento.nivel_riesgo }}</td>
-                <td>{{ medicamento.cantidad_stock }}</td>
+                <td>{{ medicamento.id_nivel_de_riesgo.descripcion }}</td>
+                <td>{{ medicamento.cant_stock }}</td>
 
                 <td>
-                    <a class="btn btn-outline-primary" href="{% url 'eliminacion_medicamento' medicamento.id_medicamento %}">
+                    <a class="btn btn-danger" href="{% url 'eliminacion_medicamento' medicamento.id_medicamento %}">
                         Eliminar
                     </a>
-                    <a class="btn btn-outline-primary" href="{% url 'modificaciones_medicamento' medicamento.id_medicamento %}">
+                    <a class="btn btn-light" href="{% url 'modificaciones_medicamento' medicamento.id_medicamento %}">
                         Modificar
                     </a>
                 </td>
