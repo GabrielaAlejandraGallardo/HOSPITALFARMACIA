@@ -1,0 +1,24 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Eliminación de Agentes {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-danger text-white p-4 rounded">
+    <h1>Eliminar Agente</h1>
+    <p>¿Está seguro que desea eliminar el siguiente agente?</p>
+    <ul>
+        <li><strong>Nombre y Apellido:</strong> {{ agente.nombre_apellido }}</li>
+        <li><strong>DNI:</strong> {{ agente.dni }}</li>
+        <li><strong>Contacto:</strong> {{ agente.contacto }}</li>
+        <li><strong>Especialidad:</strong> {{ agente.id_especialidad }}</li>
+        <li><strong>Email:</strong> {{ agente.email }}</li>
+    </ul>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark">Confirmar Eliminación</button>
+        <a class="btn btn-outline-dark" href="{% url 'lista_agentes' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock contenido %}
+
+

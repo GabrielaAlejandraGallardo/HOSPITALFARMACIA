@@ -30,13 +30,22 @@ def reporte_diario(request):
     total_ingresados = ingresados_hoy.count()
     total_dispensados = dispensas_hoy.aggregate(total=Sum("cantidad"))["total"] or 0
 
-    # Agrupar dispensas por medicamento
+    # Agrupar dispensas por medicamento (usando id, no description)
     dispensas_por_medicamento = (
         dispensas_hoy
-        .values("id_medicamento__description")
+        .values("id_medicamento")  # <--- cambiado
         .annotate(total=Sum("cantidad"))
         .order_by("-total")
     )
+
+    # Convertir a lista de dicts con el nombre legible
+    dispensas_lista = []
+    for item in dispensas_por_medicamento:
+        med = Medicamento.objects.get(id_medicamento=item["id_medicamento"])
+        dispensas_lista.append({
+            "medicamento": med.description,
+            "total": item["total"],
+        })
 
     return render(request, "reporte_diario.html", {
         "hoy": hoy,
@@ -44,7 +53,7 @@ def reporte_diario(request):
         "dispensas_hoy": dispensas_hoy,
         "total_ingresados": total_ingresados,
         "total_dispensados": total_dispensados,
-        "dispensas_por_medicamento": dispensas_por_medicamento,
+        "dispensas_por_medicamento": dispensas_lista,  # <--- ahora pasa la lista procesada
     })
 
 def medicamentos_mas_dispensados(request):
