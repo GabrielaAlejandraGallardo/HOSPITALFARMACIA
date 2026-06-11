@@ -1,0 +1,37 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Alta de Agente {% endblock titulo %}  
+
+{% block contenido %}
+
+<div class="container mt-4 bg-white text-dark p-4 rounded">
+    <h1>Alta de Agente</h1>
+    <form method="post" class="text-dark">
+        {% csrf_token %} 
+           <div class="mb-3">
+            <label for="dni" class="form-label">Dni:</label>
+            <input type="text" class="form-control" id="dni" name="dni" required>
+            <label for="nombre_apellido" class="form-label">Nombre y Apellido:</label>
+            <input type="text" class="form-control" id="nombre_apellido" name="nombre_apellido" required>
+            <label for="contacto" class="form-label">Contacto:</label>
+            <input type="text" class="form-control" id="contacto" name="contacto" required>
+            <label for="id_especialidad" class="form-label">Especialidad:</label>
+          <select class="form-select" id="id_especialidad" name="id_especialidad" required>
+           {% for especialidad in especialidades %}
+           <option value="{{ especialidad.id_especialidad }}">
+            {{ especialidad.nombre_especialidad }}
+          </option>
+           {% endfor %}
+         </select>
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+         
+
+        </div>
+         <button><a href="/lista_agentes/">volver</a></button>
+
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+{% endblock contenido %}

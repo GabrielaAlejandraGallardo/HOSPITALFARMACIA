@@ -70,7 +70,7 @@
                 <a class="nav-link protected-link" href="{% url 'lista_hueco' %}" data-protected="true">Hueco</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link protected-link" href="" data-protected="true">Medicamentos</a>
+                <a class="nav-link protected-link" href="{% url 'lista_medicamento' %}" data-protected="true">Medicamentos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link protected-link" href="" data-protected="true">Descartables</a>
@@ -101,14 +101,14 @@
       </nav>
 
 
-      <div class="container">
-        <div class="row">
-            <div class="col-12">
-              <br>
-                {% block contenido %}{% endblock contenido %}
-            </div>
-        </div>
-      </div>
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <br>
+      {% block contenido %}{% endblock contenido %}
+    </div>
+  </div>
+</div>
 
 
     <!-- Bootstrap JavaScript Libraries -->

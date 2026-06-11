@@ -1,14 +1,14 @@
-# TODO: Fix alta_deposito - ACTUALIZADO ✅
+# TODO
 
-## Cambios:
-1. ✅ Template lista_deposito.html: Enlace corregido `{% url 'alta_deposito' %}` 
-2. ✅ View alta_deposito: GET renderiza alta_deposito.html, POST guarda y redirige
+## Fase 1: Análisis
+- [x] Identificar el error TypeError por kwargs no soportados en `Agente()`.
+- [x] Ver `Agente` en `AdminFarmacia/agente/models.py` vs campos usados en `agente/views.py` y templates.
 
-## Prueba:
-- /lista_deposito/ → click Agregar → /alta_deposito/ (form)
-- Submit → nuevo depósito en lista
+## Fase 2: Plan de corrección
+- [ ] Actualizar `AdminFarmacia/agente/models.py` para incluir `telefono`, `direccion` y `id_deposito`.
+- [ ] Crear migraciones y aplicar con `makemigrations` y `migrate`.
 
-**Nota:** El log muestra user aún clickea /lista_deposito/alta_deposito/ - con enlace {% url %} irá a /alta_deposito/ correcto. Recarga servidor para ver cambios en template.
-
-Comando servidor Windows: `cd AdminFarmacia` enter, luego `python manage.py runserver`
+## Fase 3: Validación
+- [ ] Probar POST `/alta_agentes/`.
+- [ ] Probar POST `/modificaciones_agentes/<id>/`.
 
