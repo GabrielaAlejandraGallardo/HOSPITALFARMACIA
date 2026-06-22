@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'agente',
     'deposito',
     'medicamento',  
+    'descartable',
 ]
 
 MIDDLEWARE = [

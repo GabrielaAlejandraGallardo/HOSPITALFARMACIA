@@ -1,0 +1,97 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Reporte Diario{% endblock titulo %}
+{% block contenido %}
+<div class="p-4 rounded bg-light">
+    <h1>Reporte Diario - {{ hoy|date:"d/m/Y" }}</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Descatables Ingresados</h5>
+                    <p class="display-4">{{ total_ingresados }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Unidades Dispensadas</h5>
+                    <p class="display-4">{{ total_dispensados }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Medicamentos Ingresados -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5>Descartables Ingresados Hoy</h5>
+                </div>
+                <div class="card-body">
+                    {% if ingresados_hoy %}
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th>Descartable</th>
+                                <th>Lote</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for med in ingresados_hoy %}
+                            <tr>
+                                <td>{{ med.description }}</td>
+                                <td>{{ med.lote }}</td>
+                                <td>{{ med.cant_stock }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-muted">No se ingresaron descartables hoy.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicamentos Dispensados -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>Medicamentos Dispensados Hoy</h5>
+                </div>
+                <div class="card-body">
+                    {% if dispensas_por_medicamento %}
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th>Medicamento</th>
+                                <th>Cantidad Dispensada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in dispensas_por_medicamento %}
+                            <tr>
+                                <td>{{ item.descartables }}</td>
+                                <td>{{ item.total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-muted">No se realizaron dispensas hoy.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'lista_descartable' %}" class="btn btn-secondary">Volver al listado</a>
+    </div>
+</div>
+{% endblock contenido %}

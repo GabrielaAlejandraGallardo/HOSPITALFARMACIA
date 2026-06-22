@@ -1,0 +1,24 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Dispensar Descartable{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-primary text-white p-4 rounded">
+    <h1>Dispensar: {{ descartable.description }}</h1>
+    <p><strong>Stock actual:</strong> {{ descartable.cant_stock }}</p>
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad a dispensar:</label>
+            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="{{ medicamento.cant_stock }}" required>
+        </div>
+        <a class="btn btn-secondary text-white" href="{% url 'lista_descartable' %}">Volver</a>
+        <button type="submit" class="btn btn-dark">Dispensar</button>
+        <a class="btn btn-outline-light" href="{% url 'lista_descartable' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock contenido %}

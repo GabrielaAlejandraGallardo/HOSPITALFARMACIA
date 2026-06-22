@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Estado_medicamento',
+            name='Estado_descartable',
             fields=[
                 ('id_estado', models.IntegerField(primary_key=True, serialize=False)),
                 ('descripcion', models.TextField(max_length=200)),
@@ -42,22 +42,22 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Medicamento',
+            name='Descartable',
             fields=[
-                ('id_medicamento', models.AutoField(primary_key=True, serialize=False)),
+                ('id_descartable', models.AutoField(primary_key=True, serialize=False)),
                 ('description', models.TextField(max_length=200)),
                 ('fecha_vencimiento', models.DateField()),
                 ('lote', models.TextField(max_length=200)),
                 ('fecha_ingreso', models.DateField()),
                 ('fecha_dispensa', models.DateField()),
-                ('qr', models.ImageField(blank=True, null=True, upload_to='medicamento/qr/', verbose_name='QR')),
+                ('qr', models.ImageField(blank=True, null=True, upload_to='descartable/qr/', verbose_name='QR')),
                 ('cod_barra', models.IntegerField()),
                 ('cant_stock', models.IntegerField()),
                 ('id_deposito', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='deposito.deposito')),
-                ('id_estado', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='medicamento.estado_medicamento')),
-                ('id_laboratorio', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='medicamento.laboratorio')),
-                ('id_nivel_de_riesgo', models.ForeignKey(max_length=20, on_delete=django.db.models.deletion.CASCADE, related_name='riesgo_medicamento', to='medicamento.nivel_riesgo')),
-                ('refrigeracion', models.ForeignKey(max_length=20, on_delete=django.db.models.deletion.CASCADE, to='medicamento.refrigeracion')),
+                ('id_estado', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='descartable.estado_descartable')),
+                ('id_laboratorio', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='descartable.laboratorio')),
+                ('id_nivel_de_riesgo', models.ForeignKey(max_length=20, on_delete=django.db.models.deletion.CASCADE, related_name='riesgo_descartable', to='descartable.nivel_riesgo')),
+                ('refrigeracion', models.ForeignKey(max_length=20, on_delete=django.db.models.deletion.CASCADE, to='descartable.refrigeracion')),
             ],
         ),
         migrations.CreateModel(
@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                 ('id_dispensa', models.AutoField(primary_key=True, serialize=False)),
                 ('cantidad', models.IntegerField()),
                 ('fecha', models.DateTimeField(auto_now_add=True)),
-                ('id_medicamento', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='dispensas', to='medicamento.medicamento')),
+                ('id_descartable', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='dispensas', to='descartable.descartable')),
             ],
         ),
     ]

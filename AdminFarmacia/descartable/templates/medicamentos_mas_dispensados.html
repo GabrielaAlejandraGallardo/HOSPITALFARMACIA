@@ -1,0 +1,37 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}  Descartables Más Dispensados{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4">
+    <div class="bg-primary text-white p-4 rounded mb-4">
+        <h1>Descartables Más Dispensados (Última Semana)</h1>
+    </div>
+
+    {% if dispensas %}
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Descartable</th>
+                <th>Cantidad Dispensada</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in dispensas %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.id_descartable__description }}</td>
+                <td>{{ item.total_dispensado }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info">
+        No se registraron dispensas en la última semana.
+    </div>
+    {% endif %}
+
+    <a href="{% url 'lista_descartable' %}" class="btn btn-secondary">Volver al listado</a>
+</div>
+{% endblock contenido %}
