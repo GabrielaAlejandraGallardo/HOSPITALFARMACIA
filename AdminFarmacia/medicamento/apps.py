@@ -7,5 +7,3 @@ class MedicamentoConfig(AppConfig):
     
 class DepositoConfig(AppConfig):
     name='deposito'    
-    
-    
