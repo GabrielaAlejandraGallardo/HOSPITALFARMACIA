@@ -240,10 +240,10 @@ def modificaciones_descartable(request, id_descartable):
         descartable.id_estado_id = request.POST.get("id_estado")
 
         # ✅ si es ForeignKey, usar refrigeracion_id
-        descartable.refrigeracion_id = request.POST.get("refrigeracion")
+        descartable.refrigeracion= request.POST.get("refrigeracion")
 
-        descartable.id_nivel_de_riesgo_id = request.POST.get("id_nivel_de_riesgo")
-        descartable.cant_stock = request.POST.get("cant_Stock")
+        descartable.id_nivel_de_riesgo = request.POST.get("id_nivel_de_riesgo")
+        descartable.cant_stock = request.POST.get("cant_stock")
         descartable.save()
         return redirect("lista_descartable")
 
