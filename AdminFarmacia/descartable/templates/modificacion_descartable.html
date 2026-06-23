@@ -1,18 +1,30 @@
 {% extends 'pagina_base/base.html' %}
 {% load static %}
+<<<<<<< HEAD
 {% block titulo %}Modificar DescartableS {% endblock titulo %}
 {% block contenido %}
 <div class="container mt-4 bg-warning text-dark p-4 rounded">
     <h1>Modificar Descartables</h1>
+=======
+{% block titulo %}Modificar Descartable {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-warning text-dark p-4 rounded">
+    <h1>Modificar Descartable</h1>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
     <form method="post">
         {% csrf_token %}
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción:</label>
+<<<<<<< HEAD
             <input type="text" class="form-control" id="descripcion" name="description" value="{{ descartable.description }}" required>
+=======
+            <input type="text" class="form-control" id="descripcion" name="description" value="{{ medicamento.description }}" required>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
             <label for="laboratorio" class="form-label">Laboratorio:</label>
             <select class="form-select" id="laboratorio" name="laboratorio" required>
                 <option value="">Seleccione un laboratorio</option>
                 {% for laboratorio in laboratorios %}
+<<<<<<< HEAD
                     <option value="{{ laboratorio.laboratorio }}" {% if descartable.laboratorio == laboratorio.laboratorio %}selected{% endif %}>{{ laboratorio.descripcion }}</option>
                 {% endfor %}
             </select>
@@ -22,10 +34,22 @@
             <input type="text" class="form-control" id="lote" name="lote" value="{{ descartable.lote }}" required>
             <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
             <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" value="{{ descartable.fecha_ingreso|date:'Y-m-d' }}" required>
+=======
+                    <option value="{{ laboratorio.laboratorio }}" {% if medicamento.laboratorio == laboratorio.laboratorio %}selected{% endif %}>{{ laboratorio.descripcion }}</option>
+                {% endfor %}
+            </select>
+            <label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento:</label>
+            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" value="{{ medicamento.fecha_vencimiento|date:'Y-m-d' }}" required>
+            <label for="lote" class="form-label">Lote:</label>      
+            <input type="text" class="form-control" id="lote" name="lote" value="{{ medicamento.lote }}" required>
+            <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
+            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" value="{{ medicamento.fecha_ingreso|date:'Y-m-d' }}" required>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
             <label for="deposito" class="form-label">Depósito:</label>
             <select class="form-select" id="deposito" name="deposito" required>
                 <option value="">Seleccione un depósito</option>
                 {% for deposito in depositos %}
+<<<<<<< HEAD
                     <option value="{{ deposito.id_deposito }}" {% if descartable.id_deposito_id == deposito.id_deposito %}selected{% endif %}>{{ deposito.descripcion }}</option>
                 {% endfor %}
             </select>
@@ -37,6 +61,18 @@
                 .qr }}" required>
             <label for="codigo_barra" class="form-label">Código de Barra:</label>
             <input type="text" class="form-control" id="codigo_barra" name="cod_barra" value="{{ descartable.cod_barra }}" required>
+=======
+                    <option value="{{ deposito.id_deposito }}" {% if medicamento.id_deposito_id == deposito.id_deposito %}selected{% endif %}>{{ deposito.descripcion }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="fecha_dispensa" class="form-label">Fecha de Dispensa:</label>
+            <input type="date" class="form-control" id="fecha_dispensa" name="fecha_dispensa" value="{{ medicamento.fecha_dispensa|date:'Y-m-d' }}" required>
+            <label for="qr" class="form-label">QR:</label>
+            <input type="text" class="form-control" id="qr" name="qr" value="{{ medicamento.qr }}" required>
+            <label for="codigo_barra" class="form-label">Código de Barra:</label>
+            <input type="text" class="form-control" id="codigo_barra" name="cod_barra" value="{{ medicamento.cod_barra }}" required>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
             <label for="estado" class="form-label">Estado:</label>
             <select class="form-select" id="estado" name="id_estado" required>
                 <option value="">Seleccione un estado</option>
@@ -45,7 +81,11 @@
                 {% endfor %}
             </select>
             <label for="refrigeracion" class="form-label">Refrigeración:</label>
+<<<<<<< HEAD
             <input type="text" class="form-control" id="refrigeracion" name="refrigeracion" value="{{ descartable.refrigeracion }}" required>
+=======
+            <input type="text" class="form-control" id="refrigeracion" name="refrigeracion" value="{{ medicamento.refrigeracion }}" required>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
             <label for="nivel_riesgo" class="form-label">Nivel de Riesgo:</label>
             <select class="form-select" id="nivel_riesgo" name="id_nivel_de_riesgo" required>
                 <option value="">Seleccione un nivel de riesgo</option>
@@ -54,9 +94,15 @@
                 {% endfor %}
             </select>
             <label for="cantidad_stock" class="form-label">Cantidad en Stock:</label>
+<<<<<<< HEAD
             <input type="number" class="form-control" id="cant_stock" name="cant_stock" value="{{descartable.cant_stock }}" required>        </div>
         <button type="submit" class="btn btn-dark">Guardar Cambios</button>
         <a class="btn btn-outline-dark" href="{% url 'lista_medicamento' %}">Cancelar</a>
+=======
+            <input type="number" class="form-control" id="cant_stock" name="cant_stock" value="{{ medicamento.cant_stock }}" required>        </div>
+        <button type="submit" class="btn btn-dark">Guardar Cambios</button>
+        <a class="btn btn-outline-dark" href="{% url 'lista_descartable' %}">Cancelar</a>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
     </form>
 </div>
 {% endblock contenido %}

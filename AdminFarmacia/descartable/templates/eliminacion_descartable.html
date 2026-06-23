@@ -1,5 +1,6 @@
 {% extends 'pagina_base/base.html' %}
 {% load static %}
+<<<<<<< HEAD
 {% block titulo %}Eliminar Medicamento {% endblock titulo %}
 {% block contenido %}
 <div class="container mt-4 bg-danger text-white p-4 rounded">
@@ -8,6 +9,16 @@
     <ul>
         <li><strong>Código:</strong> {{ descartable.id_descartable}}</li>
         <li><strong>Descripción:</strong> {{descartable.descripcion }}</li>
+=======
+{% block titulo %}Eliminar Descartable {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-danger text-white p-4 rounded">
+    <h1>Eliminar Descartable</h1>
+    <p>¿Está seguro que desea eliminar el siguiente descartable?</p>
+    <ul>
+        <li><strong>Código:</strong> {{ descartable.id_descartable }}</li>
+        <li><strong>Descripción:</strong> {{ descartable.descripcion }}</li>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
     </ul>
     
     <form method="post">

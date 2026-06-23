@@ -3,6 +3,7 @@
 {% block titulo %}Lista de Descartable {% endblock titulo %}
 {% block contenido %}
 
+<<<<<<< HEAD
   <form method="GET" action="{% url 'buscar_descartable' %}" class="mb-3">
   <label for="descripcion">Nombre Descartable
   </label>
@@ -12,6 +13,10 @@
 
 <div class="container-fluid p-4 rounded bg-light text-dark border border-dark">
   <h1>Lista de Descartable</h1>
+=======
+<div class="container-fluid p-4 rounded bg-light text-dark border border-dark">
+    <h1>Lista de Descartable</h1>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
     <table class="table">
         <thead>
             <tr>
@@ -34,7 +39,11 @@
         <tbody>
             {% for med in descartables %}
             <tr>
+<<<<<<< HEAD
                 <td>{{ med.id_descartable}}</td>
+=======
+                <td>{{ med.id_descartable }}</td>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                 <td>{{ med.description }}</td>
                 <td>{{ med.id_laboratorio.descripcion }}</td>
                 <td>{{ med.fecha_vencimiento }}</td>
@@ -71,7 +80,11 @@
     </table>
 <div class="mt-3 d-flex gap-2 flex-wrap">
     <a class="btn btn-primary" href="{% url 'alta_descartable' %}">Agregar Descartable</a>
+<<<<<<< HEAD
     <a href="{% url 'medicamentos_mas_dispensados' %}" class="btn btn-success">Ver más dispensados (semana)</a>
+=======
+    <a href="{% url 'descartable_mas_dispensados' %}" class="btn btn-success">Ver más dispensados (semana)</a>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
     <a href="{% url 'reporte_diario' %}" class="btn btn-info text-white">Reporte Diario</a>
 </div>
 </div>

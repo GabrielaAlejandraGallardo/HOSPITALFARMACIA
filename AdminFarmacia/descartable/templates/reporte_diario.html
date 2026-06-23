@@ -1,6 +1,10 @@
 {% extends 'pagina_base/base.html' %}
 {% load static %}
+<<<<<<< HEAD
 {% block titulo %}Reporte Descartables{% endblock titulo %}
+=======
+{% block titulo %}Reporte Diario{% endblock titulo %}
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
 {% block contenido %}
 <div class="p-4 rounded bg-light">
     <h1>Reporte Diario - {{ hoy|date:"d/m/Y" }}</h1>
@@ -9,7 +13,11 @@
         <div class="col-md-6">
             <div class="card bg-primary text-white">
                 <div class="card-body text-center">
+<<<<<<< HEAD
                     <h5 class="card-title">Descartables Ingresados</h5>
+=======
+                    <h5 class="card-title">Descatables Ingresados</h5>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                     <p class="display-4">{{ total_ingresados }}</p>
                 </div>
             </div>
@@ -29,14 +37,22 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-primary text-white">
+<<<<<<< HEAD
                     <h5>Decartables Ingresados Hoy</h5>
+=======
+                    <h5>Descartables Ingresados Hoy</h5>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                 </div>
                 <div class="card-body">
                     {% if ingresados_hoy %}
                     <table class="table table-sm table-striped">
                         <thead>
                             <tr>
+<<<<<<< HEAD
                                 <th>Description</th>
+=======
+                                <th>Descartable</th>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                                 <th>Lote</th>
                                 <th>Stock</th>
                             </tr>
@@ -52,7 +68,11 @@
                         </tbody>
                     </table>
                     {% else %}
+<<<<<<< HEAD
                     <p class="text-muted">No se ingresaron medicamentos hoy.</p>
+=======
+                    <p class="text-muted">No se ingresaron descartables hoy.</p>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                     {% endif %}
                 </div>
             </div>
@@ -62,21 +82,33 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-success text-white">
+<<<<<<< HEAD
                     <h5>DescartableS Dispensados Hoy</h5>
+=======
+                    <h5>Medicamentos Dispensados Hoy</h5>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                 </div>
                 <div class="card-body">
                     {% if dispensas_por_medicamento %}
                     <table class="table table-sm table-striped">
                         <thead>
                             <tr>
+<<<<<<< HEAD
                                 <th>descartable</th>
+=======
+                                <th>Medicamento</th>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                                 <th>Cantidad Dispensada</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in dispensas_por_medicamento %}
                             <tr>
+<<<<<<< HEAD
                                 <td>{{ item.descartable }}</td>
+=======
+                                <td>{{ item.descartables }}</td>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
                                 <td>{{ item.total }}</td>
                             </tr>
                             {% endfor %}

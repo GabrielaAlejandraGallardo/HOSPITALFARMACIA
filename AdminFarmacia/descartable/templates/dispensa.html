@@ -1,10 +1,18 @@
 {% extends 'pagina_base/base.html' %}
 {% load static %}
+<<<<<<< HEAD
 {% block titulo %}Dispensar Medicamento{% endblock titulo %}
 {% block contenido %}
 <div class="container mt-4 bg-primary text-white p-4 rounded">
     <h1>Dispensar: {{ medicamento.description }}</h1>
     <p><strong>Stock actual:</strong> {{ medicamento.cant_stock }}</p>
+=======
+{% block titulo %}Dispensar Descartable{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-primary text-white p-4 rounded">
+    <h1>Dispensar: {{ descartable.description }}</h1>
+    <p><strong>Stock actual:</strong> {{ descartable.cant_stock }}</p>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
 
     {% if error %}
         <div class="alert alert-danger">{{ error }}</div>
@@ -14,7 +22,11 @@
         {% csrf_token %}
         <div class="mb-3">
             <label for="cantidad" class="form-label">Cantidad a dispensar:</label>
+<<<<<<< HEAD
             <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="{{ descartable.cant_stock }}" required>
+=======
+            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="{{ medicamento.cant_stock }}" required>
+>>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
         </div>
         <a class="btn btn-secondary text-white" href="{% url 'lista_descartable' %}">Volver</a>
         <button type="submit" class="btn btn-dark">Dispensar</button>
