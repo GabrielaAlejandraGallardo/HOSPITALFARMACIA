@@ -19,4 +19,5 @@ urlpatterns = [
     path('dispensa/<int:id_medicamento>/', views.realizar_dispensa, name='dispensa_medicamento'),
     path('mas-dispensados/', views.medicamentos_mas_dispensados, name='medicamentos_mas_dispensados'),
     path('reporte-diario/', views.reporte_diario, name='reporte_diario'),
+    path("buscar/", views.buscar_medicamento, name="buscar_medicamento"),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

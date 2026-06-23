@@ -1,0 +1,78 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Alta de Descartables{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-primary text-white p-4 rounded">
+    <h1>Alta de Descartables</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción:</label>
+            <input type="text" class="form-control" id="descripcion" name="description" required>
+            <label for="laboratorio" class="form-label">Laboratorio:</label>
+            <select class="form-select" id="laboratorio" name="laboratorio" required    >
+                <option value="">Seleccione un laboratorio</option>
+                {% for labo in laboratorios %}
+                    <option value="{{ labo.id_laboratorio }}">{{ labo.descripcion }}</option>
+                {% endfor %}    
+            </select>
+            <label for="fecha_vencimiento" class="form-label">Fecha de Vencimiento:</label>
+            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
+            <label for="lote" class="form-label">Lote:</label>      
+            <input type="text" class="form-control" id="lote" name="lote" required>
+            <label for="fecha_ingreso" class="form-label">Fecha de Ingreso:</label>
+            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
+            <label for="deposito" class="form-label">Depósito:</label>
+            <select class="form-select" id="deposito" name="deposito" required>
+                <option value="">Seleccione un depósito</option>
+                {% for deposito in depositos %}
+                    <option value="{{ deposito.id_deposito }}">{{ deposito.descripcion }}</option>
+                {% endfor %}
+            </select>
+
+            <!--label for="fecha_dispensa" class="form-label">Fecha de Dispensa:</label>
+            <input type="date" class="form-control" id="fecha_dispensa" name="fecha_dispensa" required-->
+            <label for="qr" class="form-label">QR:</label>
+            <input type="text" class="form-control" id="qr" name="qr">
+            <label for="codigo_barra" class="form-label">Código de Barra:</label>
+            <input type="text" class="form-control" id="codigo_barra" name="cod_barra" required>
+            <label for="estado" class="form-label">Estado:</label>
+            <select class="form-select" id="estado" name="id_estado" required>
+                <option value="">Seleccione un estado</option>
+                {% for estado in estados %}
+                    <option value="{{ estado.id_estado }}">{{ estado.descripcion }}</option>
+                {% endfor %}
+            </select>
+           
+            <label for="refrigeracion" class="form-label">Refrigeración:</label>
+            <select class="form-select" name="refrigeracion" id="refrigeracion" required>
+              <option value="">Seleccione una opción</option>
+              {% for ref in refrigeracion %}
+              <option value="{{ ref.id }}">{{ ref.descripcion }}</option>
+              {% endfor %}
+          </select>
+
+
+            <label for="nivel_riesgo" class="form-label">Nivel de Riesgo:</label>
+            <select class="form-select" id="nivel_riesgo" name="id_nivel_de_riesgo" required>
+                <option value="">Seleccione un nivel de riesgo</option>
+                {% for nivel in niveles %}
+                    <option value="{{ nivel.id_nivel_de_riesgo }}">{{ nivel.descripcion }}</option>
+                {% endfor %}
+            </select>
+            <label for="cant_stock" class="form-label">Cantidad en Stock:</label>
+            <input type="number" class="form-control" id="cant_stock" name="cant_stock" required>
+
+        </div>
+       
+    <a class="btn btn-secondary text-white"  href="{% url 'lista_descartable' %}"> Volver</a>
+      <button type="submit" class="btn btn-dark">Guardar</button>
+
+
+      <a class="btn btn-outline-dark" href="{% url 'lista_descartable' %}">Cancelar</a>
+  
+    </form>
+
+
+</div>
+{% endblock contenido %}

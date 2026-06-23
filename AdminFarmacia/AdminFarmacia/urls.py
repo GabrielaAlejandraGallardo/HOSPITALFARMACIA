@@ -23,4 +23,5 @@ urlpatterns = [
     path("", include("agente.urls")),
     path("", include("deposito.urls")),
     path("", include("medicamento.urls")),
+    path("", include("descartable.urls"))
 ]

@@ -3,12 +3,15 @@ from .models import *
 from deposito.models import Deposito, Hueco, Supervisor
 from medicamento.models import (
     Laboratorio,
-    Estado_medicamento,
     Nivel_Riesgo,
-    Medicamento,
     Refrigeracion,
     Dispensa,
 )
+from datetime import datetime
+from medicamento.models import Estado_medicamento, Nivel_Riesgo, Refrigeracion, Laboratorio
+from deposito.models import Deposito
+from .models import Descartable
+
 
 from django.conf import settings
 
@@ -22,8 +25,8 @@ from django.db.models import Sum, Count
 def reporte_diario(request):
     hoy = timezone.now().date()
 
-    # Medicamentos ingresados hoy
-    ingresados_hoy = Medicamento.objects.filter(fecha_ingreso=hoy)
+    # Descartables ingresados hoy
+    ingresados_hoy = Descartable.objects.filter(fecha_ingreso=hoy)
 
     # Medicamentos dispensados hoy
     dispensas_hoy = Dispensa.objects.filter(fecha__date=hoy)
@@ -35,7 +38,7 @@ def reporte_diario(request):
     # Agrupar dispensas por medicamento (usando id, no description)
     dispensas_por_medicamento = (
         dispensas_hoy
-        .values("id_medicamento")  # <--- cambiado
+        .values("id_descartable")  # <--- cambiado
         .annotate(total=Sum("cantidad"))
         .order_by("-total")
     )
@@ -43,9 +46,9 @@ def reporte_diario(request):
     # Convertir a lista de dicts con el nombre legible
     dispensas_lista = []
     for item in dispensas_por_medicamento:
-        med = Medicamento.objects.get(id_medicamento=item["id_medicamento"])
+        med = Descartable.objects.get(id_descartable=item["id_descartable"])
         dispensas_lista.append({
-            "medicamento": med.description,
+            "descartable": med.description,
             "total": item["total"],
         })
 
@@ -66,7 +69,7 @@ def medicamentos_mas_dispensados(request):
     dispensas = (
         Dispensa.objects
         .filter(fecha__gte=una_semana_atras)
-        .values("id_medicamento__id_medicamento", "id_medicamento__description")
+        .values("id_descartable__id_descartable", "id_descartable__description")
         .annotate(total_dispensado=Sum("cantidad"))
         .order_by("-total_dispensado")
     )
@@ -78,24 +81,32 @@ def inicio(request):
     return render(request, "pagina_base/inicio.html")
 
 
-# --- Medicamentos ---
+
+from django.shortcuts import render
+from .models import Descartable
+
+def lista_descartable(request):
+    descartables = Descartable.objects.all()
+    return render(request, "lista_descartable.html", {
+    "descartables": descartables
+})
 
 
-def lista_medicamento(request):
-    medicamentos = Medicamento.objects.all()
-    return render(request, "lista_medicamento.html", {"medicamentos": medicamentos})
-
-def buscar_medicamento(request):
+def buscar_descartable(request):
     query = request.GET.get("descripcion", "")
-    medicamentos = Medicamento.objects.all()
+    descartables = Descartable.objects.all()
 
     if query:
-        medicamentos = medicamentos.filter(description__icontains=query)
+        descartables = Descartable.objects.filter(description__icontains=query)
 
-    return render(request, "lista_medicamento.html", {
-        "medicamentos": medicamentos
+    return render(request, "lista_descartable.html", {
+        "descartables": descartables
     })
-def alta_medicamento(request):
+
+
+
+
+def alta_descartable(request):
     if request.method == "POST":
         description = request.POST.get("description")
         laboratorio_id = request.POST.get("laboratorio")  # CORREGIDO
@@ -111,7 +122,7 @@ def alta_medicamento(request):
         nivel_id = request.POST.get("id_nivel_de_riesgo")
         cantidad_stock = request.POST.get("cant_stock")
 
-        medicamento = Medicamento(
+        descartable = Descartable(
             description=description,
             id_laboratorio_id=laboratorio_id,  # CORREGIDO
             fecha_vencimiento=fecha_vencimiento,
@@ -126,8 +137,8 @@ def alta_medicamento(request):
             id_nivel_de_riesgo_id=nivel_id,
             cant_stock=cantidad_stock,
         )
-        medicamento.save()
-        return redirect("lista_medicamento")
+        descartable.save()
+        return redirect("lista_descartable")
 
     depositos = Deposito.objects.all()
     estados = Estado_medicamento.objects.all()
@@ -137,7 +148,7 @@ def alta_medicamento(request):
 
     return render(
         request,
-        "alta_medicamento.html",
+        "alta_descartable.html",
         {
             "depositos": depositos,
             "laboratorios": laboratorios,  # CORREGIDO
@@ -148,32 +159,33 @@ def alta_medicamento(request):
     )
 
 
-def eliminacion_medicamento(request, id_medicamento):
-    medicamento = Medicamento.objects.get(id_medicamento=id_medicamento)
+
+def eliminacion_descartable(request, id_descartable):
+    descartable = Descartable.objects.get(id_descartable=id_descartable)
     if request.method == "POST":
-        medicamento.delete()
-        return redirect("lista_medicamento")
-    return render(request, "elimina_medicamento.html", {"deposito": medicamento})
+        descartable.delete()
+        return redirect("lista_descartable")
+    return render(request, "elimina_descartable.html", {"descartable": descartable})
 
 
-def modificaciones_medicamento(request, id_medicamento):
-    medicamento = Medicamento.objects.get(id_medicamento=id_medicamento)
+def modificaciones_descartable(request, id_descartable):
+    descartable = Descartable.objects.get(id_descartable=id_descartable)
     if request.method == "POST":
-        medicamento.description = request.POST.get("description")
-        medicamento.laboratorio_id = request.POST.get("laboratorio")
-        medicamento.fecha_vencimiento = request.POST.get("fecha_vencimiento")
-        medicamento.lote = request.POST.get("lote")
-        medicamento.fecha_ingreso = request.POST.get("fecha_ingreso")
-        medicamento.id_deposito_id = request.POST.get("deposito")
-        medicamento.fecha_dispensa = request.POST.get("fecha_dispensa")
-        medicamento.qr = request.POST.get("qr") or None
-        medicamento.cod_barra = request.POST.get("cod_barra")
-        medicamento.id_estado_id = request.POST.get("id_estado")
-        medicamento.refrigeracion = request.POST.get("refrigeracion")
-        medicamento.id_nivel_de_riesgo_id = request.POST.get("id_nivel_de_riesgo")
-        medicamento.cant_stock = request.POST.get("cantidad_stock")
-        medicamento.save()
-        return redirect("lista_medicamento")
+        descartable = request.POST.get("description")
+        descartable.laboratorio_id = request.POST.get("laboratorio")
+        descartable.fecha_vencimiento = request.POST.get("fecha_vencimiento")
+        descartable.lote = request.POST.get("lote")
+        descartable.fecha_ingreso = request.POST.get("fecha_ingreso")
+        descartable.id_deposito_id = request.POST.get("deposito")
+        descartable.fecha_dispensa = request.POST.get("fecha_dispensa")
+        descartable.qr = request.POST.get("qr") or None
+        descartable.cod_barra = request.POST.get("cod_barra")
+        descartable.id_estado_id = request.POST.get("id_estado")
+        descartable.refrigeracion = request.POST.get("refrigeracion")
+        descartable.id_nivel_de_riesgo_id = request.POST.get("id_nivel_de_riesgo")
+        descartable.cant_stock = request.POST.get("cantidad_stock")
+        descartable.save()
+        return redirect("lista_descartable")
 
     depositos = Deposito.objects.all()
     estados = Estado_medicamento.objects.all()
@@ -183,7 +195,7 @@ def modificaciones_medicamento(request, id_medicamento):
         request,
         "modificacion_medicamento.html",
         {
-            "medicamento": medicamento,
+            "descartable": descartable,
             "laboratorios": Laboratorio.objects.all(),
             "depositos": depositos,
             "estados": estados,
@@ -294,34 +306,34 @@ def modificaciones_laboratorio(request, id_laboratorio):
         request, "modificacion_laboratorio.html", {"laboratorio": laboratorio}
     )
 
-def realizar_dispensa(request, id_medicamento):
-    medicamento = Medicamento.objects.get(id_medicamento=id_medicamento)
+def realizar_dispensa(request, id_descartable):
+    descartable = Descartable.objects.get(id_descartable=id_descartable)
 
     if request.method == "POST":
         cantidad = int(request.POST.get("cantidad", 0))
 
         if cantidad <= 0:
             return render(request, "dispensa.html", {
-                "medicamento": medicamento,
+                "descartable": descartable,
                 "error": "La cantidad debe ser mayor a cero.",
             })
 
-        if cantidad > medicamento.cant_stock:
+        if cantidad > descartable.cant_stock:
             return render(request, "dispensa.html", {
-                "medicamento": medicamento,
-                "error": f"Stock insuficiente. Stock actual: {medicamento.cant_stock}",
+                "descartable": descartable,
+                "error": f"Stock insuficiente. Stock actual: {descartable.cant_stock}",
             })
 
         # Crear el registro de dispensa
         Dispensa.objects.create(
-            id_medicamento=medicamento,
+            id_descartable=descartable,
             cantidad=cantidad,
         )
 
         # Descontar del stock
-        medicamento.cant_stock -= cantidad
-        medicamento.save()
+        descartable.cant_stock -= cantidad
+        descartable.save()
 
-        return redirect("lista_medicamento")
+        return redirect("lista_descartable")
 
-    return render(request, "dispensa.html", {"medicamento": medicamento})
+    return render(request, "dispensa.html", {"descartable": descartable})

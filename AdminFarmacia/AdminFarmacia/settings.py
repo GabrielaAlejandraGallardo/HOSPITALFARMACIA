@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# settings.py
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Application definition
 
@@ -40,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'agente',
     'deposito',
-    'medicamento',  
+    'medicamento',
+    'descartable',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +125,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+

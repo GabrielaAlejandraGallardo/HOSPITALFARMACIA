@@ -1,20 +1,21 @@
 {% extends 'pagina_base/base.html' %}
 {% load static %}
-{% block titulo %}Lista de Medicamentos {% endblock titulo %}
+{% block titulo %}Lista de Descartable {% endblock titulo %}
 {% block contenido %}
 
-  <form method="GET" action="{% url 'buscar_medicamento' %}" class="mb-3">
-  <label for="descripcion">Nombre Medicamento</label>
+  <form method="GET" action="{% url 'buscar_descartable' %}" class="mb-3">
+  <label for="descripcion">Nombre Descartable
+  </label>
   <input type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese nombre...">
   <button type="submit" class="btn btn-primary mt-2">Buscar</button>
   </form>
 
 <div class="container-fluid p-4 rounded bg-light text-dark border border-dark">
-  <h1>Lista de Medicamentos</h1>
+  <h1>Lista de Descartable</h1>
     <table class="table">
         <thead>
             <tr>
-                <th>Código Medicamento</th>
+                <th>Código Descartable</th>
                 <th>Nombre</th>
                 <th>Laboratorio</th>
                 <th>Fecha de Vencimiento</th>
@@ -31,9 +32,9 @@
             </tr>
         </thead>
         <tbody>
-            {% for med in medicamentos %}
+            {% for med in descartables %}
             <tr>
-                <td>{{ med.id_medicamento }}</td>
+                <td>{{ med.id_descartable}}</td>
                 <td>{{ med.description }}</td>
                 <td>{{ med.id_laboratorio.descripcion }}</td>
                 <td>{{ med.fecha_vencimiento }}</td>
@@ -56,20 +57,20 @@
                     {% endif %} 
                 </td>
                 <td>
-                    <a class="btn btn-danger" href="{% url 'eliminacion_medicamento' med.id_medicamento %}">
+                    <a class="btn btn-danger" href="{% url 'eliminacion_descartable' med.id_descartable %}">
                         Eliminar
                     </a>
-                    <a class="btn btn-light" href="{% url 'modificaciones_medicamento' med.id_medicamento %}">
+                    <a class="btn btn-light" href="{% url 'modificaciones_descartable' med.id_descartable %}">
                         Modificar
                     </a>
-                    <a href="{% url 'dispensa_medicamento' med.id_medicamento %}" class="btn btn-warning btn-sm">Dispensar</a>
+                    <a href="{% url 'dispensa_medicamento' med.id_descartable %}" class="btn btn-warning btn-sm">Dispensar</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 <div class="mt-3 d-flex gap-2 flex-wrap">
-    <a class="btn btn-primary" href="{% url 'alta_medicamento' %}">Agregar Medicamento</a>
+    <a class="btn btn-primary" href="{% url 'alta_descartable' %}">Agregar Descartable</a>
     <a href="{% url 'medicamentos_mas_dispensados' %}" class="btn btn-success">Ver más dispensados (semana)</a>
     <a href="{% url 'reporte_diario' %}" class="btn btn-info text-white">Reporte Diario</a>
 </div>

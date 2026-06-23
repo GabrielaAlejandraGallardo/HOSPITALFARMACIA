@@ -1,0 +1,19 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Eliminar descartable {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-danger text-white p-4 rounded">
+    <h1>Eliminar Descartable</h1>
+    <p>¿Está seguro que desea eliminar el siguiente descartable?</p>
+    <ul>
+        <li><strong>Código:</strong> {{ descartable.id_descartable }}</li>
+        <li><strong>Descripción:</strong> {{ descartable.descripcion }}</li>
+    </ul>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark">Confirmar Eliminación</button>
+        <a class="btn btn-outline-dark" href="{% url 'lista_descartable' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock contenido %}
