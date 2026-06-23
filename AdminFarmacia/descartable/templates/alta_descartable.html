@@ -37,13 +37,8 @@
                 {% endfor %}
             </select>
 
-<<<<<<< HEAD
-            <!--label for="fecha_dispensa" class="form-label">Fecha de Dispensa:</label>
-            <input type="date" class="form-control" id="fecha_dispensa" name="fecha_dispensa" required-->
-=======
             <label for="fecha_dispensa" class="form-label">Fecha de Dispensa:</label>
             <input type="date" class="form-control" id="fecha_dispensa" name="fecha_dispensa" required>
->>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
             <label for="qr" class="form-label">QR:</label>
             <input type="text" class="form-control" id="qr" name="qr">
             <label for="codigo_barra" class="form-label">Código de Barra:</label>
@@ -57,21 +52,12 @@
             </select>
            
             <label for="refrigeracion" class="form-label">Refrigeración:</label>
-<<<<<<< HEAD
-            <select class="form-select" name="refrigeracion" id="refrigeracion" required>
-              <option value="">Seleccione una opción</option>
-              {% for ref in refrigeracion %}
-              <option value="{{ ref.id }}">{{ ref.descripcion }}</option>
-              {% endfor %}
-          </select>
-=======
             <select  class="form-select" name="refrigeracion" id="refrigeracion" required>
                 <option value="">Seleccione una opción</option>
                 {% for ref in refrigeracion %}
                     <option value="{{ ref.refrigeracion }}">{{ ref.descripcion }}</option>
                 {% endfor %}
             </select>
->>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
 
 
             <label for="nivel_riesgo" class="form-label">Nivel de Riesgo:</label>
@@ -86,18 +72,11 @@
 
         </div>
        
-<<<<<<< HEAD
-    <a class="btn btn-secondary text-white"  href="{% url 'lista_descartable' %}"> Volver</a>
-      <button type="submit" class="btn btn-dark">Guardar</button>
-
-
-=======
     <a class="btn btn-secondary text-white"
    href="{% url 'lista_descartable' %}">
    Volver
 </a>
       <button type="submit" class="btn btn-dark" href="{% url 'lista_descartable' %}">Guardar</button>
->>>>>>> 3506bcb9958dee91c886cb7c09d97d3b0e703b89
       <a class="btn btn-outline-dark" href="{% url 'lista_descartable' %}">Cancelar</a>
   
     </form>
