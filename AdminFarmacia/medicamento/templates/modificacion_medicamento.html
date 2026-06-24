@@ -44,7 +44,13 @@
                 {% endfor %}
             </select>
             <label for="refrigeracion" class="form-label">Refrigeración:</label>
-            <input type="text" class="form-control" id="refrigeracion" name="refrigeracion" value="{{ medicamento.refrigeracion }}" required>
+            <select name="refrigeracion" class="form-select" id="refrigeracion" required>
+              <option value="">Seleccione una opción</option>
+              {% for r in refrigeracion %}
+                   <option value="{{ r.refrigeracion}}">{{ r.descripcion}}</option>
+              {% endfor %}
+            </select>
+
             <label for="nivel_riesgo" class="form-label">Nivel de Riesgo:</label>
             <select class="form-select" id="nivel_riesgo" name="id_nivel_de_riesgo" required>
                 <option value="">Seleccione un nivel de riesgo</option>
@@ -52,8 +58,9 @@
                     <option value="{{ nivel.id_nivel_de_riesgo }}" {% if medicamento.id_nivel_de_riesgo_id == nivel.id_nivel_de_riesgo %}selected{% endif %}>{{ nivel.descripcion }}</option>
                 {% endfor %}
             </select>
-            <label for="cantidad_stock" class="form-label">Cantidad en Stock:</label>
-            <input type="number" class="form-control" id="cant_stock" name="cant_stock" value="{{ medicamento.cant_stock }}" required>        </div>
+            <label for="cantidad_stock">Cantidad en stock:</label>
+              <input type="number" name="cantidad_stock" id="cantidad_stock" value="{{ medicamento.cant_stock }}">
+
         <button type="submit" class="btn btn-dark">Guardar Cambios</button>
         <a class="btn btn-outline-dark" href="{% url 'lista_medicamento' %}">Cancelar</a>
     </form>

@@ -169,7 +169,7 @@ def modificaciones_medicamento(request, id_medicamento):
         medicamento.qr = request.POST.get("qr") or None
         medicamento.cod_barra = request.POST.get("cod_barra")
         medicamento.id_estado_id = request.POST.get("id_estado")
-        medicamento.refrigeracion = request.POST.get("refrigeracion")
+        medicamento.refrigeracion_id = request.POST.get("refrigeracion")
         medicamento.id_nivel_de_riesgo_id = request.POST.get("id_nivel_de_riesgo")
         medicamento.cant_stock = request.POST.get("cantidad_stock")
         medicamento.save()
@@ -299,7 +299,7 @@ def realizar_dispensa(request, id_medicamento):
 
     if request.method == "POST":
         cantidad = int(request.POST.get("cantidad", 0))
-
+        
         if cantidad <= 0:
             return render(request, "dispensa.html", {
                 "medicamento": medicamento,
@@ -320,6 +320,7 @@ def realizar_dispensa(request, id_medicamento):
 
         # Descontar del stock
         medicamento.cant_stock -= cantidad
+        medicamento.fecha_dispensa = timezone.now()
         medicamento.save()
 
         return redirect("lista_medicamento")

@@ -368,7 +368,7 @@ def modificaciones_laboratorio(request, id_laboratorio):
 
 
 def realizar_dispensa(request, id_descartable):
-    descartable = Medicamento.objects.get(id_descartable=id_descartable)
+    descartable = Descartable.objects.get(id_descartable=id_descartable)
 
     if request.method == "POST":
         cantidad = int(request.POST.get("cantidad", 0))
