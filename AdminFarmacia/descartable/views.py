@@ -247,8 +247,18 @@ def modificaciones_descartable(request, id_descartable):
             # si el usuario deja el campo vacío, conserva el valor actual
             descartable.refrigeracion_id = descartable.refrigeracion_id
 
-        descartable.id_nivel_de_riesgo = request.POST.get("id_nivel_de_riesgo")
-        descartable.cant_stock = request.POST.get("cant_stock")
+        nivel_id = request.POST.get("id_nivel_de_riesgo")
+        if nivel_id is not None and str(nivel_id).strip() != "":
+            descartable.id_nivel_de_riesgo_id = int(nivel_id)
+        else:
+            descartable.id_nivel_de_riesgo_id = descartable.id_nivel_de_riesgo_id
+
+        # cant_stock es IntegerField; si llega '' o vacío, conserva el actual
+        cant_stock = request.POST.get("cant_stock")
+        if cant_stock is not None and str(cant_stock).strip() != "":
+            descartable.cant_stock = int(cant_stock)
+
+
         descartable.save()
         return redirect("lista_descartable")
 
