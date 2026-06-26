@@ -44,14 +44,15 @@
                 {% endfor %}
             </select>
           <label for="refrigeracion">Refrigeración:</label>
-          <select class="form-select" name="refrigeracion" id="refrigeracion">
+          <select class="form-select" name="refrigeracion" id="refrigeracion" required>
+              <option value="">Seleccione una refrigeración</option>
               {% for opcion in refrigeraciones %}
-              <option value="{{ opcion.id_refrigeracion }}"
-                {% if opcion.id == descartable.refrigeracion_id %}selected{% endif %}>
-               {{ opcion.descripcion}}
-           </option>
-             {% endfor %}
-                     </select>
+              <option value="{{ opcion.id_refrigeracion }}" {% if opcion.id_refrigeracion == descartable.refrigeracion_id %}selected{% endif %}>
+                  {{ opcion.descripcion }}
+              </option>
+              {% endfor %}
+          </select>
+
 
             <label for="nivel_riesgo" class="form-label">Nivel de Riesgo:</label>
             <select class="form-select" id="nivel_riesgo" name="id_nivel_de_riesgo" required>

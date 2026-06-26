@@ -19,7 +19,7 @@ from django.db.models import Sum, Count
 
 
 
-def reporte_diario(request):
+def reporte_diario_medicamento(request):
     hoy = timezone.now().date()
 
     # Medicamentos ingresados hoy
@@ -49,7 +49,7 @@ def reporte_diario(request):
             "total": item["total"],
         })
 
-    return render(request, "reporte_diario.html", {
+    return render(request, "reporte_diario_medicamento.html", {
         "hoy": hoy,
         "ingresados_hoy": ingresados_hoy,
         "dispensas_hoy": dispensas_hoy,

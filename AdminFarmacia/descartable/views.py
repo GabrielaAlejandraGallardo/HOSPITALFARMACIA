@@ -239,8 +239,13 @@ def modificaciones_descartable(request, id_descartable):
         descartable.cod_barra = request.POST.get("cod_barra")
         descartable.id_estado_id = request.POST.get("id_estado")
 
-        # ✅ si es ForeignKey, usar refrigeracion_id
-        descartable.refrigeracion= request.POST.get("refrigeracion")
+        # ✅ ForeignKey: asignar por id (manejar '' recibido del <select>)
+        refrigeracion_id = request.POST.get("refrigeracion")
+        if refrigeracion_id is not None and str(refrigeracion_id).strip() != "":
+            descartable.refrigeracion_id = int(refrigeracion_id)
+        else:
+            # si el usuario deja el campo vacío, conserva el valor actual
+            descartable.refrigeracion_id = descartable.refrigeracion_id
 
         descartable.id_nivel_de_riesgo = request.POST.get("id_nivel_de_riesgo")
         descartable.cant_stock = request.POST.get("cant_stock")
@@ -393,11 +398,12 @@ def realizar_dispensa(request, id_descartable):
                 },
             )
 
-        # Crear el registro de dispensa
+        # Crear el registro de dispensa (ForeignKey: pasar instancia, no id en el campo FK)
         Dispensa.objects.create(
-            id_descartable=id_descartable,
+            id_descartable=descartable,
             cantidad=cantidad,
         )
+
 
         # Descontar del stock
         descartable.cant_stock -= cantidad
