@@ -58,14 +58,15 @@ def reporte_diario(request):
     )
 
 def buscar_descartable(request):
-    query = request.GET.get("descripcion", "")
-    descartable = Descartable.objects.all()
+    query = (request.GET.get("descripcion") or "").strip()
+    qs = Descartable.objects.all()
 
     if query:
-        descartable = descartable.filter(description__icontains=query)
+        # Buscar por el mismo campo que se muestra en el input (description)
+        qs = qs.filter(description__icontains=query)
 
     return render(request, "lista_descartable.html", {
-        "descartable": descartable
+        "descartables": qs,
     })
 
 def descartable_mas_dispensados(request):
