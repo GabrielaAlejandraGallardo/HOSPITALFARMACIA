@@ -65,7 +65,7 @@ def buscar_descartable(request):
         descartable = descartable.filter(description__icontains=query)
 
     return render(request, "lista_descartable.html", {
-        "descartable": descartable
+        "descartables": descartable
     })
 
 def descartable_mas_dispensados(request):
