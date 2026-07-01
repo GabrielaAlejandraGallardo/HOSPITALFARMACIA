@@ -6,6 +6,7 @@ from .models import (
     Nivel_Riesgo,
     Refrigeracion,
     Laboratorio,
+    Dispensa,
 )
 
 admin.site.register(Medicamento)
@@ -13,5 +14,6 @@ admin.site.register(Estado_medicamento)
 admin.site.register(Nivel_Riesgo)
 admin.site.register(Refrigeracion)
 admin.site.register(Laboratorio)
+admin.site.register(Dispensa)
 
 

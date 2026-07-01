@@ -37,6 +37,7 @@
                         <thead>
                             <tr>
                                 <th>Medicamento</th>
+                                <th>deposito</tr>
                                 <th>Lote</th>
                                 <th>Stock</th>
                             </tr>
@@ -45,6 +46,7 @@
                             {% for med in ingresados_hoy %}
                             <tr>
                                 <td>{{ med.description }}</td>
+                                
                                 <td>{{ med.lote }}</td>
                                 <td>{{ med.cant_stock }}</td>
                             </tr>
@@ -71,6 +73,7 @@
                             <tr>
                                 <th>Medicamento</th>
                                 <th>Cantidad Dispensada</th>
+                                <th>Depósito</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -78,6 +81,7 @@
                             <tr>
                                 <td>{{ item.medicamento }}</td>
                                 <td>{{ item.total }}</td>
+                                <th>{{ item.deposito }}</th>
                             </tr>
                             {% endfor %}
                         </tbody>

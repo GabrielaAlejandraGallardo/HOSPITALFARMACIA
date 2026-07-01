@@ -29,6 +29,6 @@ urlpatterns = [
     path("descartable/descartable_mas-dispensados/", views.descartable_mas_dispensados, name="descartable_mas_dispensados"),
     path("descartable/reporte-diario/", views.reporte_diario, name="reporte_diario"),
 
-    path("buscar/", views.buscar_descartable, name="buscar_descartable"),
+    path("descartable/buscar/", views.buscar_descartable, name="buscar_descartable"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -32,31 +32,39 @@ def reporte_diario_medicamento(request):
     total_ingresados = ingresados_hoy.count()
     total_dispensados = dispensas_hoy.aggregate(total=Sum("cantidad"))["total"] or 0
 
-    # Agrupar dispensas por medicamento (usando id, no description)
+    # Agrupar dispensas por medicamento (y sumar cantidades)
+    # OJO: no tenemos campo deposito en Dispensa, entonces el depósito se obtiene desde Medicamento.
     dispensas_por_medicamento = (
         dispensas_hoy
-        .values("id_medicamento")  # <--- cambiado
+        .values("id_medicamento")
         .annotate(total=Sum("cantidad"))
         .order_by("-total")
     )
 
-    # Convertir a lista de dicts con el nombre legible
     dispensas_lista = []
     for item in dispensas_por_medicamento:
         med = Medicamento.objects.get(id_medicamento=item["id_medicamento"])
-        dispensas_lista.append({
-            "medicamento": med.description,
-            "total": item["total"],
-        })
+        deposito_desc = getattr(med.id_deposito, "descripcion", "") if med.id_deposito_id else ""
+        dispensas_lista.append(
+            {
+                "medicamento": med.description,
+                "total": item["total"],
+                "deposito": deposito_desc,
+            }
+        )
 
-    return render(request, "reporte_diario_medicamento.html", {
-        "hoy": hoy,
-        "ingresados_hoy": ingresados_hoy,
-        "dispensas_hoy": dispensas_hoy,
-        "total_ingresados": total_ingresados,
-        "total_dispensados": total_dispensados,
-        "dispensas_por_medicamento": dispensas_lista,  # <--- ahora pasa la lista procesada
-    })
+    return render(
+        request,
+        "reporte_diario_medicamento.html",
+        {
+            "hoy": hoy,
+            "ingresados_hoy": ingresados_hoy,
+            "dispensas_hoy": dispensas_hoy,
+            "total_ingresados": total_ingresados,
+            "total_dispensados": total_dispensados,
+            "dispensas_por_medicamento": dispensas_lista,
+        },
+    )
 
 def medicamentos_mas_dispensados(request):
     # Calcular la fecha de hace una semana
@@ -118,7 +126,7 @@ def alta_medicamento(request):
             lote=lote,
             fecha_ingreso=fecha_ingreso,
             id_deposito_id=deposito_id,
-            fecha_dispensa=fecha_dispensa,
+            fecha_dispensa=fecha_dispensa or None,
             qr=qr or None,
             cod_barra=cod_barra,
             id_estado_id=estado_id,
@@ -296,21 +304,46 @@ def modificaciones_laboratorio(request, id_laboratorio):
 
 def realizar_dispensa(request, id_medicamento):
     medicamento = Medicamento.objects.get(id_medicamento=id_medicamento)
+    depositos = Deposito.objects.all()
 
     if request.method == "POST":
         cantidad = int(request.POST.get("cantidad", 0))
-        
+        deposito_id = request.POST.get("deposito")
+
+        if not deposito_id:
+            return render(
+                request,
+                "dispensa.html",
+                {
+                    "medicamento": medicamento,
+                    "depositos": depositos,
+                    "error": "Seleccione un depósito.",
+                },
+            )
+
+        deposito = int(deposito_id)
+
         if cantidad <= 0:
-            return render(request, "dispensa.html", {
-                "medicamento": medicamento,
-                "error": "La cantidad debe ser mayor a cero.",
-            })
+            return render(
+                request,
+                "dispensa.html",
+                {
+                    "medicamento": medicamento,
+                    "depositos": depositos,
+                    "error": "La cantidad debe ser mayor a cero.",
+                },
+            )
 
         if cantidad > medicamento.cant_stock:
-            return render(request, "dispensa.html", {
-                "medicamento": medicamento,
-                "error": f"Stock insuficiente. Stock actual: {medicamento.cant_stock}",
-            })
+            return render(
+                request,
+                "dispensa.html",
+                {
+                    "medicamento": medicamento,
+                    "depositos": depositos,
+                    "error": f"Stock insuficiente. Stock actual: {medicamento.cant_stock}",
+                },
+            )
 
         # Crear el registro de dispensa
         Dispensa.objects.create(
@@ -321,8 +354,9 @@ def realizar_dispensa(request, id_medicamento):
         # Descontar del stock
         medicamento.cant_stock -= cantidad
         medicamento.fecha_dispensa = timezone.now()
+        medicamento.id_deposito = Deposito.objects.get(id_deposito=deposito)
         medicamento.save()
 
         return redirect("lista_medicamento")
 
-    return render(request, "dispensa.html", {"medicamento": medicamento})
+    return render(request, "dispensa.html", {"medicamento": medicamento, "depositos": depositos})

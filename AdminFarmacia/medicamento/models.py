@@ -41,7 +41,7 @@ class Medicamento(models.Model):
         on_delete=models.CASCADE,
         related_name="medicamentos"   # 👈 distinto de "descartables"
     )
-    fecha_dispensa = models.DateField()
+    fecha_dispensa = models.DateField(null=True)
     qr = models.ImageField(
         upload_to="medicamento/qr/", blank=True, null=True, verbose_name="QR"
     )
@@ -63,6 +63,7 @@ class Dispensa(models.Model):
     id_medicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE, related_name="dispensas")
     cantidad = models.IntegerField()
     fecha = models.DateTimeField(auto_now_add=True)
+    id_deposito=models.ForeignKey(Deposito,on_delete=models.CASCADE, related_name="deposito")
 
     def __str__(self):
-        return f"Dispensa {self.id_dispensa} - {self.id_medicamento.description} ({self.cantidad})"
+        return f"Dispensa {self.id_dispensa} - {self.id_medicamento.description} ({self.cantidad})({self.id_deposito})"
