@@ -18,6 +18,8 @@ from django.db.models import Sum
 from django.db.models import Sum, Count
 
 
+def remito(request):
+
 
 def reporte_diario_medicamento(request):
     hoy = timezone.now().date()
