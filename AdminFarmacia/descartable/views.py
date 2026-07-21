@@ -62,12 +62,9 @@ def buscar_descartable(request):
     qs = Descartable.objects.all()
 
     if query:
-        # Buscar por el mismo campo que se muestra en el input (description)
         qs = qs.filter(description__icontains=query)
 
-    return render(request, "lista_descartable.html", {
-        "descartables": qs,
-    })
+    return render(request, "lista_descartable.html", {"descartables": qs})
 
 def descartable_mas_dispensados(request):
     # Calcular la fecha de hace una semana
