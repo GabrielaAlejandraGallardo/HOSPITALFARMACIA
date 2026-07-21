@@ -33,14 +33,22 @@ def lista_deposito(request):
 def alta_deposito(request):
     if request.method == "POST":
         descripcion = request.POST.get("descripcion")
+        id_supervisor = request.POST.get("id_supervisor")  # Obtener el ID del supervisor seleccionado
+        supervisor = Supervisor.objects.get(id_supervisor=id_supervisor)  # Obtener el objeto Supervisor
         if descripcion:  # Validación básica
             deposito = Deposito(descripcion=descripcion)
+            deposito.id_supervisor = supervisor  # Asignar el supervisor al depósito
             deposito.save()
         return redirect("lista_deposito")  # Redirige a la vista que lista depósitos
 
-    # Si es GET, mostramos la lista de depósitos
+    # Si es GET, mostramos la lista de depósitos y supervisores
     depositos = Deposito.objects.all()
-    return render(request, "alta_deposito.html", {"depositos": depositos})
+    supervisores = Supervisor.objects.all()
+    return render(
+        request,
+        "alta_deposito.html",
+        {"depositos": depositos, "supervisores": supervisores},
+    )
 
 
 def eliminacion_deposito(request, id_deposito):
@@ -55,12 +63,22 @@ def eliminacion_deposito(request, id_deposito):
 
 def modificaciones_deposito(request, id_deposito):
     deposito = Deposito.objects.get(id_deposito=id_deposito)
+    
 
     if request.method == "POST":
         descripcion = request.POST.get("descripcion")
+        id_supervisor = request.POST.get("id_supervisor")  # Obtener el ID del supervisor seleccionado
+
         if descripcion:
             deposito.descripcion = descripcion
-            deposito.save()
+
+        # Solo actualiza el supervisor si viene informado en el formulario.
+        if id_supervisor:
+            supervisor = Supervisor.objects.get(id_supervisor=id_supervisor)
+            deposito.id_supervisor = supervisor
+
+        deposito.save()
+        return redirect("lista_deposito")
         return redirect("lista_deposito")
 
     return render(request, "modificacion_deposito.html", {"deposito": deposito})
@@ -91,12 +109,44 @@ def lista_supervisor(request):
 
 
 def alta_supervisor(request):
-    pass
+    if request.method == "POST":
+        nombre_apellido = request.POST.get("nombre_apellido")
+        contacto = request.POST.get("contacto")
+
+        if nombre_apellido and contacto:
+            Supervisor.objects.create(
+                nombre_apellido=nombre_apellido,
+                contacto=contacto,
+            )
+            return redirect("lista_supervisor")
+
+    return render(request, "alta_supervisor.html")
 
 
 def eliminacion_supervisor(request, id_supervisor):
-    pass
+    supervisor = Supervisor.objects.get(id_supervisor=id_supervisor)
+
+    if request.method == "POST":
+        supervisor.delete()
+        return redirect("lista_supervisor")
+
+    return render(request, "eliminacion_supervisor.html", {"supervisor": supervisor})       
+
+    
+    
 
 
 def modificacion_supervisor(request, id_supervisor):
-    pass
+    supervisor = Supervisor.objects.get(id_supervisor=id_supervisor)
+
+    if request.method == "POST":
+        nombre_apellido = request.POST.get("nombre_apellido")
+        contacto = request.POST.get("contacto")
+        if nombre_apellido and contacto:
+            supervisor.nombre_apellido = nombre_apellido
+            supervisor.contacto = contacto
+            supervisor.save()
+            return redirect("lista_supervisor")
+
+    return render(request, "modificacion_supervisor.html", {"supervisor": supervisor})  
+

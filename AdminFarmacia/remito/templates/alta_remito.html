@@ -1,0 +1,122 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Alta de Remito{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-primary text-white p-4 rounded">
+    <h1>Alta de Remito</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="deposito_origen" class="form-label">Depósito Origen:</label>
+            <select class="form-select" id="deposito_origen" name="id_deposito_origen" required>
+                <option value="">Seleccione depósito de origen</option>
+                {% for dep in depositos %}
+                    <option value="{{ dep.id_deposito }}">{{ dep.descripcion }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="deposito_destino" class="form-label">Depósito Destino:</label>
+            <select class="form-select" id="deposito_destino" name="id_deposito_destino" required>
+                <option value="">Seleccione depósito de destino</option>
+                {% for dep in depositos %}
+                    <option value="{{ dep.id_deposito }}">{{ dep.descripcion }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="observaciones" class="form-label">Observaciones:</label>
+            <textarea class="form-control" id="observaciones" name="observaciones" rows="3"></textarea>
+
+            <hr class="mt-4">
+            <h4>Medicamentos a despachar</h4>
+            <div id="medicamentos-container">
+                <div class="row mb-2 medicamento-item">
+                    <div class="col-md-6">
+                        <select class="form-select" name="medicamento_ids[]">
+                            <option value="">Seleccione medicamento</option>
+                            {% for med in medicamentos %}
+                                <option value="{{ med.id_medicamento }}">{{ med.description }} (Stock: {{ med.cant_stock }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" name="medicamento_cantidades[]" placeholder="Cantidad" min="1">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-light btn-remove-medicamento">-</button>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-light btn-sm mb-3" id="add-medicamento">+ Agregar medicamento</button>
+
+            <hr>
+            <h4>Descartables a despachar</h4>
+            <div id="descartables-container">
+                <div class="row mb-2 descartable-item">
+                    <div class="col-md-6">
+                        <select class="form-select" name="descartable_ids[]">
+                            <option value="">Seleccione descartable</option>
+                            {% for desc in descartables %}
+                                <option value="{{ desc.id_descartable }}">{{ desc.description }} (Stock: {{ desc.cant_stock }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" name="descartable_cantidades[]" placeholder="Cantidad" min="1">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-outline-light btn-remove-descartable">-</button>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-light btn-sm mb-3" id="add-descartable">+ Agregar descartable</button>
+
+        </div>
+
+        <button type="submit" class="btn btn-dark">Guardar</button>
+        <a class="btn btn-outline-light" href="{% url 'lista_remito' %}">Cancelar</a>
+        <a class="btn btn-secondary text-white" href="{% url 'lista_remito' %}">Volver</a>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add medicamento row
+    document.getElementById('add-medicamento').addEventListener('click', function() {
+        const container = document.getElementById('medicamentos-container');
+        const firstItem = container.querySelector('.medicamento-item');
+        const newItem = firstItem.cloneNode(true);
+        newItem.querySelectorAll('select, input').forEach(el => el.value = '');
+        container.appendChild(newItem);
+    });
+
+    // Remove medicamento row
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-remove-medicamento')) {
+            const items = document.querySelectorAll('#medicamentos-container .medicamento-item');
+            if (items.length > 1) {
+                e.target.closest('.medicamento-item').remove();
+            }
+        }
+    });
+
+    // Add descartable row
+    document.getElementById('add-descartable').addEventListener('click', function() {
+        const container = document.getElementById('descartables-container');
+        const firstItem = container.querySelector('.descartable-item');
+        const newItem = firstItem.cloneNode(true);
+        newItem.querySelectorAll('select, input').forEach(el => el.value = '');
+        container.appendChild(newItem);
+    });
+
+    // Remove descartable row
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-remove-descartable')) {
+            const items = document.querySelectorAll('#descartables-container .descartable-item');
+            if (items.length > 1) {
+                e.target.closest('.descartable-item').remove();
+            }
+        }
+    });
+});
+</script>
+{% endblock contenido %}

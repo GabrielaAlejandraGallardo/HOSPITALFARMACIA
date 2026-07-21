@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'deposito',
     'medicamento',  
     'descartable',
+    'remito',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,22 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Modificar Supervisor {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-warning text-dark p-4 rounded">
+    <h1>Modificar Supervisor</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre_apellido" class="form-label">Nombre y Apellido:</label>
+            <input type="text" class="form-control" id="nombre_apellido" name="nombre_apellido" value="{{ supervisor.nombre_apellido }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="contacto" class="form-label">Contacto:</label>
+            <input type="text" class="form-control" id="contacto" name="contacto" value="{{ supervisor.contacto }}" required>
+        </div>
+        <button type="submit" class="btn btn-dark">Guardar Cambios</button>
+        <a class="btn btn-outline-dark" href="{% url 'lista_supervisor' %}">Cancelar</a>
+    </form>
+</div>
+
+{% endblock contenido %}

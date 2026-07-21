@@ -41,7 +41,7 @@ class Medicamento(models.Model):
         on_delete=models.CASCADE,
         related_name="medicamentos"   # 👈 distinto de "descartables"
     )
-    fecha_dispensa = models.DateField()
+    fecha_dispensa = models.DateField(null=True, blank=True)
     qr = models.ImageField(
         upload_to="medicamento/qr/", blank=True, null=True, verbose_name="QR"
     )
@@ -66,3 +66,4 @@ class Dispensa(models.Model):
 
     def __str__(self):
         return f"Dispensa {self.id_dispensa} - {self.id_medicamento.description} ({self.cantidad})"
+  

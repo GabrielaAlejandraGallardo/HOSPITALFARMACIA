@@ -1,0 +1,15 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Eliminar Supervisor {% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-danger text-white p-4 rounded">
+    <h1>Eliminar Supervisor</h1>
+    <p>¿Está seguro de que desea eliminar al supervisor "{{ supervisor.nombre_apellido }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a class="btn btn-outline-light" href="{% url 'lista_supervisor' %}">Cancelar</a>
+    </form>         
+</div>
+
+{% endblock contenido %}

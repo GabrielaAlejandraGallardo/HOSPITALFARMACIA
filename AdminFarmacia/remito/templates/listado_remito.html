@@ -1,0 +1,46 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Listado de Remitos{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-primary text-white p-4 rounded">
+    <h1>Listado de Remitos</h1>
+    <a class="btn btn-success mb-3" href="{% url 'alta_remito' %}">+ Nuevo Remito</a>
+    <table class="table table-striped table-bordered bg-white">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha Emisión</th>
+                <th>Depósito Origen</th>
+                <th>Depósito Destino</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for remito in remitos %}
+            <tr>
+                <td>{{ remito.id_remito }}</td>
+                <td>{{ remito.fecha_emision|date:"d/m/Y H:i" }}</td>
+                <td>{{ remito.id_deposito_origen.descripcion }}</td>
+                <td>{{ remito.id_deposito_destino.descripcion }}</td>
+                <td>{{ remito.observaciones|default:"-" }}</td>
+                <td>
+                    <a class="btn btn-warning btn-sm" href="{% url 'modificacion_remito' remito.id_remito %}">Editar</a>
+                    <a class="btn btn-danger btn-sm" href="{% url 'eliminacion_remito' remito.id_remito %}">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No hay remitos registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn btn-outline-light" href="{% url 'alta_remito' %}">Alta Remito</a>
+   
+  
+    {% if remitos %}
+        <a class="btn btn-warning" href="{% url 'modificacion_remito' remitos.0.id_remito %}">Editar Primer Remito</a>
+        <a class="btn btn-danger" href="{% url 'eliminacion_remito' remitos.0.id_remito %}">Eliminar Primer Remito</a>
+    {% endif %} 
+</div>
+{% endblock contenido %}

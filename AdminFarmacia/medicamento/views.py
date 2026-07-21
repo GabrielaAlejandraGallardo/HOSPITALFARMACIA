@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from .models import *
 from deposito.models import Deposito, Hueco, Supervisor
@@ -118,7 +119,7 @@ def alta_medicamento(request):
             lote=lote,
             fecha_ingreso=fecha_ingreso,
             id_deposito_id=deposito_id,
-            fecha_dispensa=fecha_dispensa,
+            fecha_dispensa=fecha_dispensa or None,
             qr=qr or None,
             cod_barra=cod_barra,
             id_estado_id=estado_id,
@@ -263,8 +264,9 @@ def modificacion_supervisor(request, id_supervisor):
 
 
 def lista_laboratorio(request):
+    # Se reutiliza el listado de medicamentos porque no existe lista_laboratorio.html
     laboratorios = Laboratorio.objects.all()
-    return render(request, "lista_laboratorio.html", {"laboratorios": laboratorios})
+    return render(request, "lista_medicamento.html", {"medicamentos": Medicamento.objects.none()})
 
 
 def alta_laboratorio(request):

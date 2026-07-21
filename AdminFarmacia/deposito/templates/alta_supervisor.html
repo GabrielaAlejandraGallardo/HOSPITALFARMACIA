@@ -1,0 +1,22 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Alta de Supervisor{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-primary text-white p-4 rounded">
+    <h1>Alta de Supervisor</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nombre_apellido" class="form-label">Nombre y Apellido:</label>
+            <input type="text" class="form-control" id="nombre_apellido" name="nombre_apellido" required>
+        </div>
+        <div class="mb-3">
+            <label for="contacto" class="form-label">Contacto:</label>
+            <input type="text" class="form-control" id="contacto" name="contacto" required>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a class="btn btn-outline-light" href="{% url 'lista_supervisor' %}">Cancelar</a>
+        <a class="btn btn-outline-light" href="{% url 'lista_supervisor' %}">Volver</a>
+    </form>
+</div>
+{% endblock contenido %}

@@ -1,0 +1,24 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Eliminar Remito{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-danger text-white p-4 rounded">
+    <h1>Eliminar Remito</h1>
+    <p>¿Está seguro que desea eliminar el siguiente remito?</p>
+    <ul>
+        <li><strong>ID:</strong> {{ remito.id_remito }}</li>
+        <li><strong>Fecha Emisión:</strong> {{ remito.fecha_emision|date:"d/m/Y H:i" }}</li>
+        <li><strong>Depósito Origen:</strong> {{ remito.id_deposito_origen.descripcion }}</li>
+        <li><strong>Depósito Destino:</strong> {{ remito.id_deposito_destino.descripcion }}</li>
+        <li><strong>Observaciones:</strong> {{ remito.observaciones|default:"-" }}</li>
+    </ul>
+    <p class="text-warning">Al eliminar este remito se restaurará el stock de todos los medicamentos y descartables incluidos.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark">Confirmar Eliminación</button>
+        <a class="btn btn-outline-light" href="{% url 'lista_remito' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock contenido %}
+

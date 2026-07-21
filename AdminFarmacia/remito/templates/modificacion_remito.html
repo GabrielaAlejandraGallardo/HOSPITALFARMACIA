@@ -1,0 +1,81 @@
+{% extends 'pagina_base/base.html' %}
+{% load static %}
+{% block titulo %}Modificar Remito{% endblock titulo %}
+{% block contenido %}
+<div class="container mt-4 bg-warning text-dark p-4 rounded">
+    <h1>Modificar Remito #{{ remito.id_remito }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="deposito_origen" class="form-label">Depósito Origen:</label>
+            <select class="form-select" id="deposito_origen" name="id_deposito_origen" required>
+                <option value="">Seleccione depósito de origen</option>
+                {% for dep in depositos %}
+                    <option value="{{ dep.id_deposito }}" {% if remito.id_deposito_origen_id == dep.id_deposito %}selected{% endif %}>{{ dep.descripcion }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="deposito_destino" class="form-label">Depósito Destino:</label>
+            <select class="form-select" id="deposito_destino" name="id_deposito_destino" required>
+                <option value="">Seleccione depósito de destino</option>
+                {% for dep in depositos %}
+                    <option value="{{ dep.id_deposito }}" {% if remito.id_deposito_destino_id == dep.id_deposito %}selected{% endif %}>{{ dep.descripcion }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="observaciones" class="form-label">Observaciones:</label>
+            <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ remito.observaciones|default:"" }}</textarea>
+
+            <hr class="mt-4">
+            <h4>Medicamentos en el remito</h4>
+            <table class="table table-sm table-bordered bg-white">
+                <thead>
+                    <tr>
+                        <th>Medicamento</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items_medicamentos %}
+                    <tr>
+                        <td>{{ item.id_medicamento.description }}</td>
+                        <td>{{ item.cantidad }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center">No hay medicamentos en este remito.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h4>Descartables en el remito</h4>
+            <table class="table table-sm table-bordered bg-white">
+                <thead>
+                    <tr>
+                        <th>Descartable</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items_descartables %}
+                    <tr>
+                        <td>{{ item.id_descartable.description }}</td>
+                        <td>{{ item.cantidad }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center">No hay descartables en este remito.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <small class="text-muted">Nota: Para modificar los items, elimine el remito y créelo nuevamente.</small>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Guardar Cambios</button>
+        <a class="btn btn-outline-dark" href="{% url 'lista_remito' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock contenido %}
+

@@ -15,12 +15,26 @@
         <tbody>
             {% for supervisor in supervisores %}
             <tr>
-                <td>{{ supervisor.id }}</td>
+                <td>{{ supervisor.id_supervisor }}</td>
                 <td>{{ supervisor.nombre_apellido }}</td>
                 <td>{{ supervisor.contacto }}</td>
+                 <td>
+                    <a class="btn btn-outline-primary" href="{% url 'eliminacion_supervisor' supervisor.id_supervisor %}">
+                        Eliminar
+                    </a>
+                    <a class="btn btn-outline-primary" href="{% url 'modificacion_supervisor' supervisor.id_supervisor %}">
+                        Modificar
+                    </a>
+                </td>
             </tr>
+           
+
+    
             {% endfor %}
         </tbody>
     </table>
+    <a href="{% url 'alta_supervisor' %}" class="btn btn-secondary">Agregar Supervisor</a>
+    <a href="{% url 'lista_deposito' %}" class="btn btn-outline-secondary">Lista de Depósitos</a>
+
 {% endblock contenido %}
 

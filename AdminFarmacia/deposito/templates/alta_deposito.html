@@ -10,6 +10,18 @@
             <label for="descripcion" class="form-label">Descripción:</label>
             <input type="text" class="form-control" id="descripcion" name="descripcion" required>
         </div>
+        <div class="mb-3">  
+            <label for="id_supervisor" class="form-label">Supervisor:</label>
+            <select class="form-control" id="id_supervisor" name="id_supervisor" required>
+                {% for supervisor in supervisores %}
+                    <option value="{{ supervisor.id_supervisor }}">{{ supervisor.nombre_apellido }}</option>
+                {% endfor %}
+            </select>   
+
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a class="btn btn-outline-light" href="{% url 'lista_deposito' %}">Cancelar</a>
+        <a class="btn btn-outline-light" href="{% url 'lista_deposito' %}">Volver</a>   
          <button><a href="/deposito/lista_deposito">volver</a></button>
 
 
