@@ -10,6 +10,7 @@ from medicamento.models import (
     Refrigeracion,
     Dispensa,
 )
+from remito.models import Remito, RemitoMedicamento
 
 from django.conf import settings
 
@@ -19,7 +20,6 @@ from django.db.models import Sum
 from django.db.models import Sum, Count
 
 
-def remito(request):
 
 
 def reporte_diario_medicamento(request):
@@ -28,15 +28,21 @@ def reporte_diario_medicamento(request):
     # Medicamentos ingresados hoy
     ingresados_hoy = Medicamento.objects.filter(fecha_ingreso=hoy)
 
-    # Medicamentos dispensados hoy
+    # Medicamentos dispensados hoy (vía Dispensa)
     dispensas_hoy = Dispensa.objects.filter(fecha__date=hoy)
 
-    # Totales
-    total_ingresados = ingresados_hoy.count()
-    total_dispensados = dispensas_hoy.aggregate(total=Sum("cantidad"))["total"] or 0
+    # Medicamentos despachados hoy vía Remito
+    remitos_hoy = RemitoMedicamento.objects.filter(
+        id_remito__fecha_emision__date=hoy
+    )
 
-    # Agrupar dispensas por medicamento (y sumar cantidades)
-    # OJO: no tenemos campo deposito en Dispensa, entonces el depósito se obtiene desde Medicamento.
+    # Totales combinados: Dispensa + Remito
+    total_dispensados_directos = dispensas_hoy.aggregate(total=Sum("cantidad"))["total"] or 0
+    total_despachados_remito = remitos_hoy.aggregate(total=Sum("cantidad"))["total"] or 0
+    total_ingresados = ingresados_hoy.count()
+    total_dispensados = total_dispensados_directos + total_despachados_remito
+
+    # Agrupar dispensas directas por medicamento
     dispensas_por_medicamento = (
         dispensas_hoy
         .values("id_medicamento")
@@ -44,14 +50,41 @@ def reporte_diario_medicamento(request):
         .order_by("-total")
     )
 
-    dispensas_lista = []
+    # Agrupar remitos por medicamento
+    remitos_por_medicamento = (
+        remitos_hoy
+        .values("id_medicamento")
+        .annotate(total=Sum("cantidad"))
+        .order_by("-total")
+    )
+
+    # Combinar en un dict: medicamento_id -> {total, deposito}
+    combinado = {}
+
     for item in dispensas_por_medicamento:
-        med = Medicamento.objects.get(id_medicamento=item["id_medicamento"])
+        med_id = item["id_medicamento"]
+        combinado[med_id] = {
+            "total": item["total"],
+        }
+
+    for item in remitos_por_medicamento:
+        med_id = item["id_medicamento"]
+        if med_id in combinado:
+            combinado[med_id]["total"] += item["total"]
+        else:
+            combinado[med_id] = {
+                "total": item["total"],
+            }
+
+    # Construir lista final ordenada por total descendente
+    dispensas_lista = []
+    for med_id, data in sorted(combinado.items(), key=lambda x: x[1]["total"], reverse=True):
+        med = Medicamento.objects.get(id_medicamento=med_id)
         deposito_desc = getattr(med.id_deposito, "descripcion", "") if med.id_deposito_id else ""
         dispensas_lista.append(
             {
                 "medicamento": med.description,
-                "total": item["total"],
+                "total": data["total"],
                 "deposito": deposito_desc,
             }
         )
@@ -73,16 +106,44 @@ def medicamentos_mas_dispensados(request):
     # Calcular la fecha de hace una semana
     una_semana_atras = timezone.now() - timedelta(days=7)
 
-    # Agrupar dispensas por medicamento y sumar cantidades en la última semana
-    dispensas = (
+    # Agrupar dispensas directas por medicamento en la última semana
+    dispensas = {}
+    for item in (
         Dispensa.objects
         .filter(fecha__gte=una_semana_atras)
         .values("id_medicamento__id_medicamento", "id_medicamento__description")
         .annotate(total_dispensado=Sum("cantidad"))
-        .order_by("-total_dispensado")
+    ):
+        med_id = item["id_medicamento__id_medicamento"]
+        dispensas[med_id] = {
+            "id_medicamento__id_medicamento": med_id,
+            "id_medicamento__description": item["id_medicamento__description"],
+            "total_dispensado": item["total_dispensado"],
+        }
+
+    # Agrupar remitos de medicamentos en la última semana
+    remitos = (
+        RemitoMedicamento.objects
+        .filter(id_remito__fecha_emision__gte=una_semana_atras)
+        .values("id_medicamento__id_medicamento", "id_medicamento__description")
+        .annotate(total_despachado=Sum("cantidad"))
     )
 
-    return render(request, "medicamentos_mas_dispensados.html", {"dispensas": dispensas})
+    for item in remitos:
+        med_id = item["id_medicamento__id_medicamento"]
+        if med_id in dispensas:
+            dispensas[med_id]["total_dispensado"] += item["total_despachado"]
+        else:
+            dispensas[med_id] = {
+                "id_medicamento__id_medicamento": med_id,
+                "id_medicamento__description": item["id_medicamento__description"],
+                "total_dispensado": item["total_despachado"],
+            }
+
+    # Ordenar por total descendente
+    lista_dispensas = sorted(dispensas.values(), key=lambda x: x["total_dispensado"], reverse=True)
+
+    return render(request, "medicamentos_mas_dispensados.html", {"dispensas": lista_dispensas})
 
 # Create your views here.
 def inicio(request):
