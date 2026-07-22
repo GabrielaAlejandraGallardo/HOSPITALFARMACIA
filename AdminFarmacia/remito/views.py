@@ -11,15 +11,13 @@ def inicio(request):
 
 
 def lista_remito(request):
-    remitos = Remito.objects.all().order_by("-fecha_emision")
-    # Agregar total de cantidades e items por remito
+    remitos = Remito.objects.prefetch_related(
+        "items_medicamentos__id_medicamento",
+        "items_descartables__id_descartable",
+    ).order_by("-fecha_emision")
     for remito in remitos:
-        items_med = RemitoMedicamento.objects.filter(id_remito=remito).select_related("id_medicamento")
-        items_desc = RemitoDescartable.objects.filter(id_remito=remito).select_related("id_descartable")
-        remito.items_medicamentos = items_med
-        remito.items_descartables = items_desc
-        total_med = items_med.aggregate(total=Sum("cantidad"))["total"] or 0
-        total_desc = items_desc.aggregate(total=Sum("cantidad"))["total"] or 0
+        total_med = remito.items_medicamentos.aggregate(total=Sum("cantidad"))["total"] or 0
+        total_desc = remito.items_descartables.aggregate(total=Sum("cantidad"))["total"] or 0
         remito.total_cantidad = total_med + total_desc
     return render(request, "listado_remito.html", {"remitos": remitos})
 

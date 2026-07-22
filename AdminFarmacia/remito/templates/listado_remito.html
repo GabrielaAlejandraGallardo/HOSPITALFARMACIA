@@ -37,7 +37,8 @@
                 <td colspan="6" class="bg-light">
                     <div class="p-3">
                         <h6 class="text-dark">Medicamentos en este remito:</h6>
-                        {% if remito.items_medicamentos %}
+                        {% with items_med=remito.items_medicamentos.all %}
+                        {% if items_med %}
                         <table class="table table-sm table-bordered">
                             <thead class="table-secondary">
                                 <tr>
@@ -46,7 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in remito.items_medicamentos %}
+                                {% for item in items_med %}
                                 <tr>
                                     <td>{{ item.id_medicamento.description }}</td>
                                     <td>{{ item.cantidad }}</td>
@@ -57,9 +58,11 @@
                         {% else %}
                         <p class="text-muted">No hay medicamentos en este remito.</p>
                         {% endif %}
+                        {% endwith %}
 
                         <h6 class="text-dark mt-3">Descartables en este remito:</h6>
-                        {% if remito.items_descartables %}
+                        {% with items_desc=remito.items_descartables.all %}
+                        {% if items_desc %}
                         <table class="table table-sm table-bordered">
                             <thead class="table-secondary">
                                 <tr>
@@ -68,7 +71,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in remito.items_descartables %}
+                                {% for item in items_desc %}
                                 <tr>
                                     <td>{{ item.id_descartable.description }}</td>
                                     <td>{{ item.cantidad }}</td>
@@ -79,6 +82,7 @@
                         {% else %}
                         <p class="text-muted">No hay descartables en este remito.</p>
                         {% endif %}
+                        {% endwith %}
                     </div>
                 </td>
             </tr>
