@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remito #{{ remito.id_remito }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { font-size: 12pt; }
+        }
+        .remito-header {
+            border-bottom: 2px solid #000;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .remito-footer {
+            border-top: 2px solid #000;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="no-print mb-3">
+            <button class="btn btn-primary" onclick="window.print()">Imprimir</button>
+            <a class="btn btn-secondary" href="{% url 'lista_remito' %}">Volver al listado</a>
+        </div>
+
+        <div class="remito-header text-center">
+            <h1>REMITO DE DESPACHO</h1>
+            <h3>N° {{ remito.id_remito }}</h3>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-6">
+                <p><strong>Fecha de Emisión:</strong> {{ remito.fecha_emision|date:"d/m/Y H:i" }}</p>
+                <p><strong>Depósito Origen:</strong> {{ remito.id_deposito_origen.descripcion }}</p>
+            </div>
+            <div class="col-6">
+                <p><strong>Depósito Destino:</strong> {{ remito.id_deposito_destino.descripcion }}</p>
+                {% if remito.observaciones %}
+                <p><strong>Observaciones:</strong> {{ remito.observaciones }}</p>
+                {% endif %}
+            </div>
+
+        <h4>Medicamentos</h4>
+        <table class="table table-bordered table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Medicamento</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items_medicamentos %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.id_medicamento.description }}</td>
+                    <td>{{ item.cantidad }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">No hay medicamentos en este remito.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h4>Descartables</h4>
+        <table class="table table-bordered table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Descartable</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items_descartables %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.id_descartable.description }}</td>
+                    <td>{{ item.cantidad }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="text-center">No hay descartables en este remito.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="remito-footer">
+            <div class="row">
+                <div class="col-4">
+                    <p>_________________________</p>
+                    <p>Firma y Sello Depósito Origen</p>
+                </div>
+                <div class="col-4">
+                    <p>_________________________</p>
+                    <p>Firma y Sello Depósito Destino</p>
+                </div>
+                <div class="col-4">
+                    <p>_________________________</p>
+                    <p>Recibí Conforme</p>
+                </div>
+        </div>
+</body>
+</html>

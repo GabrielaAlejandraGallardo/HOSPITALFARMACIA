@@ -12,7 +12,8 @@
                 <th>Fecha Emisión</th>
                 <th>Depósito Origen</th>
                 <th>Depósito Destino</th>
-                <th>Cantidad</th>
+                <th>Cantidad Total</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,59 @@
                 <td>
                     <a class="btn btn-warning btn-sm" href="{% url 'modificacion_remito' remito.id_remito %}">Editar</a>
                     <a class="btn btn-danger btn-sm" href="{% url 'eliminacion_remito' remito.id_remito %}">Eliminar</a>
+                    <a class="btn btn-info btn-sm" href="{% url 'imprimir_remito' remito.id_remito %}" target="_blank">Imprimir</a>
+                    <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#items-{{ remito.id_remito }}" aria-expanded="false">
+                        Ver Items
+                    </button>
+                </td>
+            </tr>
+            <tr class="collapse" id="items-{{ remito.id_remito }}">
+                <td colspan="6" class="bg-light">
+                    <div class="p-3">
+                        <h6 class="text-dark">Medicamentos en este remito:</h6>
+                        {% if remito.items_medicamentos %}
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Medicamento</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in remito.items_medicamentos %}
+                                <tr>
+                                    <td>{{ item.id_medicamento.description }}</td>
+                                    <td>{{ item.cantidad }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-muted">No hay medicamentos en este remito.</p>
+                        {% endif %}
+
+                        <h6 class="text-dark mt-3">Descartables en este remito:</h6>
+                        {% if remito.items_descartables %}
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Descartable</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in remito.items_descartables %}
+                                <tr>
+                                    <td>{{ item.id_descartable.description }}</td>
+                                    <td>{{ item.cantidad }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-muted">No hay descartables en este remito.</p>
+                        {% endif %}
+                    </div>
                 </td>
             </tr>
             {% empty %}
@@ -36,11 +90,5 @@
         </tbody>
     </table>
     <a class="btn btn-outline-light" href="{% url 'alta_remito' %}">Alta Remito</a>
-   
-  
-    {% if remitos %}
-        <a class="btn btn-warning" href="{% url 'modificacion_remito' remitos.0.id_remito %}">Editar Primer Remito</a>
-        <a class="btn btn-danger" href="{% url 'eliminacion_remito' remitos.0.id_remito %}">Eliminar Primer Remito</a>
-    {% endif %} 
 </div>
 {% endblock contenido %}

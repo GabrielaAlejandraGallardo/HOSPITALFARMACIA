@@ -16,5 +16,9 @@ urlpatterns = [
         views.eliminacion_remito,
         name="eliminacion_remito",
     ),
+    path(
+        "remito/imprimir_remito/<int:id_remito>/",
+        views.imprimir_remito,
+        name="imprimir_remito",
+    ),
 ]
-

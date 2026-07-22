@@ -12,10 +12,14 @@ def inicio(request):
 
 def lista_remito(request):
     remitos = Remito.objects.all().order_by("-fecha_emision")
-    # Agregar total de cantidades por remito
+    # Agregar total de cantidades e items por remito
     for remito in remitos:
-        total_med = RemitoMedicamento.objects.filter(id_remito=remito).aggregate(total=Sum("cantidad"))["total"] or 0
-        total_desc = RemitoDescartable.objects.filter(id_remito=remito).aggregate(total=Sum("cantidad"))["total"] or 0
+        items_med = RemitoMedicamento.objects.filter(id_remito=remito).select_related("id_medicamento")
+        items_desc = RemitoDescartable.objects.filter(id_remito=remito).select_related("id_descartable")
+        remito.items_medicamentos = items_med
+        remito.items_descartables = items_desc
+        total_med = items_med.aggregate(total=Sum("cantidad"))["total"] or 0
+        total_desc = items_desc.aggregate(total=Sum("cantidad"))["total"] or 0
         remito.total_cantidad = total_med + total_desc
     return render(request, "listado_remito.html", {"remitos": remitos})
 
@@ -136,3 +140,13 @@ def eliminacion_remito(request, id_remito):
 
     return render(request, "eliminacion_remito.html", {"remito": remito})
 
+
+def imprimir_remito(request, id_remito):
+    remito = Remito.objects.get(id_remito=id_remito)
+    items_medicamentos = RemitoMedicamento.objects.filter(id_remito=remito).select_related("id_medicamento")
+    items_descartables = RemitoDescartable.objects.filter(id_remito=remito).select_related("id_descartable")
+    return render(request, "imprimir_remito.html", {
+        "remito": remito,
+        "items_medicamentos": items_medicamentos,
+        "items_descartables": items_descartables,
+    })
