@@ -12,7 +12,7 @@
                 <th>Fecha Emisión</th>
                 <th>Depósito Origen</th>
                 <th>Depósito Destino</th>
-                <th>Observaciones</th>
+                <th>Cantidad</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
                 <td>{{ remito.fecha_emision|date:"d/m/Y H:i" }}</td>
                 <td>{{ remito.id_deposito_origen.descripcion }}</td>
                 <td>{{ remito.id_deposito_destino.descripcion }}</td>
-                <td>{{ remito.observaciones|default:"-" }}</td>
+                <td>{{ remito.total_cantidad }}</td>
                 <td>
                     <a class="btn btn-warning btn-sm" href="{% url 'modificacion_remito' remito.id_remito %}">Editar</a>
                     <a class="btn btn-danger btn-sm" href="{% url 'eliminacion_remito' remito.id_remito %}">Eliminar</a>

@@ -3,6 +3,7 @@ from .models import Remito, RemitoMedicamento, RemitoDescartable
 from deposito.models import Deposito
 from medicamento.models import Medicamento
 from descartable.models import Descartable
+from django.db.models import Sum
 
 
 def inicio(request):
@@ -11,6 +12,11 @@ def inicio(request):
 
 def lista_remito(request):
     remitos = Remito.objects.all().order_by("-fecha_emision")
+    # Agregar total de cantidades por remito
+    for remito in remitos:
+        total_med = RemitoMedicamento.objects.filter(id_remito=remito).aggregate(total=Sum("cantidad"))["total"] or 0
+        total_desc = RemitoDescartable.objects.filter(id_remito=remito).aggregate(total=Sum("cantidad"))["total"] or 0
+        remito.total_cantidad = total_med + total_desc
     return render(request, "listado_remito.html", {"remitos": remitos})
 
 
