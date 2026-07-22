@@ -20,5 +20,5 @@ urlpatterns = [
     path('medicamento/medicamentos_mas_dispensados/', views.medicamentos_mas_dispensados, name='medicamentos_mas_dispensados'),
     path('medicamento/reporte_diario_medicamento/', views.reporte_diario_medicamento, name='reporte_diario_medicamento'),
     path("buscar/", views.buscar_medicamento, name="buscar_medicamento"),
-    path("medicamento/remito/",views.remito,name='remito')
+
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
