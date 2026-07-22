@@ -21,9 +21,11 @@
                 <th>Lote</th>
                 <th>Fecha de Ingreso</th>
                 <th>Depósito</th>   
+                
+                {% comment %}
                 <th>Fecha de Dispensa</th>
                 <th>QR</th>
-                <th>Código de Barra</th>
+                <th>Código de Barra</th> {% endcomment %}
                 <th>Estado</th>
                 <th>Refrigeración</th>
                 <th>Nivel de Riesgo</th>
@@ -40,9 +42,10 @@
                 <td>{{ med.lote }}</td>
                 <td>{{ med.fecha_ingreso }}</td>
                 <td>{{ med.id_deposito.descripcion }}</td>
+                {% comment %}
                 <td>{{ med.fecha_dispensa }}</td>
                 <td>{{ med.qr }}</td>
-                <td>{{ med.cod_barra }}</td>
+                <td>{{ med.cod_barra }}</td> {% endcomment %}
                 <td>{{ med.id_estado.descripcion }}</td>
                 <td>{{ med.refrigeracion.descripcion }}</td>
                 <td>{{ med.id_nivel_de_riesgo.descripcion }}</td>

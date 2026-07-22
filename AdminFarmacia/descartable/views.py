@@ -104,9 +104,9 @@ def alta_descartable(request):
         lote = request.POST.get("lote")
         fecha_ingreso = request.POST.get("fecha_ingreso")
         deposito_id = request.POST.get("deposito")
-        fecha_dispensa = request.POST.get("fecha_dispensa")
-        qr = request.POST.get("qr")
-        cod_barra = request.POST.get("cod_barra")
+        fecha_dispensa = request.POST.get("fecha_dispensa") or None
+        """qr = request.POST.get("qr")
+        cod_barra = request.POST.get("cod_barra")"""
         estado_id = request.POST.get("id_estado")
         refrigeracion = request.POST.get("refrigeracion")
         
@@ -192,9 +192,7 @@ def alta_descartable(request):
             lote=lote,
             fecha_ingreso=fecha_ingreso,
             id_deposito_id=deposito_id_int,
-            fecha_dispensa=fecha_dispensa,
-            qr=qr or None,
-            cod_barra=cod_barra_int,
+            fecha_dispensa=fecha_dispensa or None,
             id_estado_id=estado_id_int,  # CORREGIDO → Estado_descartable
             refrigeracion_id=refrigeracion_id_int,
             id_nivel_de_riesgo_id=nivel_id_int,
@@ -233,8 +231,8 @@ def modificaciones_descartable(request, id_descartable):
         descartable.fecha_ingreso = request.POST.get("fecha_ingreso")
         descartable.id_deposito_id = request.POST.get("deposito")
         descartable.fecha_dispensa = request.POST.get("fecha_dispensa")
-        descartable.qr = request.POST.get("qr") or None
-        descartable.cod_barra = request.POST.get("cod_barra")
+        """descartable.qr = request.POST.get("qr") or None
+        descartable.cod_barra = request.POST.get("cod_barra")"""
         descartable.id_estado_id = request.POST.get("id_estado")
 
         # ✅ ForeignKey: asignar por id (manejar '' recibido del <select>)
@@ -283,33 +281,6 @@ def modificaciones_descartable(request, id_descartable):
 # Se agregan implementaciones mínimas para que el proyecto inicie.
 
 
-def lista_hueco(request):
-    huecos = Hueco.objects.all()
-    return render(request, "lista_hueco.html", {"huecos": huecos})
-
-
-def alta_hueco(request):
-    if request.method == "POST":
-        Hueco.objects.create(descripcion=request.POST.get("descripcion", ""))
-        return redirect("lista_hueco")
-    return render(request, "alta_hueco.html")
-
-
-def eliminacion_hueco(request, id_hueco):
-    hueco = Hueco.objects.get(id_hueco=id_hueco)
-    if request.method == "POST":
-        hueco.delete()
-        return redirect("lista_hueco")
-    return render(request, "eliminacion_hueco.html", {"hueco": hueco})
-
-
-def modificaciones_hueco(request, id_hueco):
-    hueco = Hueco.objects.get(id_hueco=id_hueco)
-    if request.method == "POST":
-        hueco.descripcion = request.POST.get("descripcion", hueco.descripcion)
-        hueco.save()
-        return redirect("lista_hueco")
-    return render(request, "modificacion_hueco.html", {"hueco": hueco})
 
 
 def lista_supervisor(request):

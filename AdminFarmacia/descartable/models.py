@@ -38,11 +38,12 @@ class Descartable(models.Model):
     lote = models.TextField(max_length=200)
     fecha_ingreso = models.DateField()
     id_deposito = models.ForeignKey(Deposito, on_delete=models.CASCADE)
-    fecha_dispensa = models.DateField()
+    fecha_dispensa = models.DateField() or None
+    """
     qr = models.ImageField(
         upload_to="descartable/qr/", blank=True, null=True, verbose_name="QR"
     )
-    cod_barra = models.IntegerField()
+    cod_barra = models.IntegerField()"""
     id_estado = models.ForeignKey(Estado_descartable, on_delete=models.CASCADE)
     refrigeracion = models.ForeignKey(
         Refrigeracion, on_delete=models.CASCADE, max_length=20
