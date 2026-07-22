@@ -29,13 +29,14 @@
                     <option value="{{ deposito.id_deposito }}">{{ deposito.descripcion }}</option>
                 {% endfor %}
             </select>
-
+            {% comment %}
             <label for="fecha_dispensa" class="form-label">Fecha de Dispensa:</label>
             <input type="date" class="form-control" id="fecha_dispensa" name="fecha_dispensa" >
             <label for="qr" class="form-label">QR:</label>
             <input type="text" class="form-control" id="qr" name="qr">
             <label for="codigo_barra" class="form-label">Código de Barra:</label>
             <input type="text" class="form-control" id="codigo_barra" name="cod_barra" required>
+            {% endcomment %}
             <label for="estado" class="form-label">Estado:</label>
             <select class="form-select" id="estado" name="id_estado" required>
                 <option value="">Seleccione un estado</option>

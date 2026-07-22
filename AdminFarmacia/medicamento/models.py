@@ -42,10 +42,11 @@ class Medicamento(models.Model):
         related_name="medicamentos"   # 👈 distinto de "descartables"
     )
     fecha_dispensa = models.DateField(null=True, blank=True)
-    qr = models.ImageField(
+    """ qr = models.ImageField(
         upload_to="medicamento/qr/", blank=True, null=True, verbose_name="QR"
     )
-    cod_barra = models.IntegerField()
+    cod_barra = models.IntegerField()"""
+    
     id_estado = models.ForeignKey(Estado_medicamento, on_delete=models.CASCADE)
     refrigeracion = models.ForeignKey(
         Refrigeracion, on_delete=models.CASCADE, max_length=20

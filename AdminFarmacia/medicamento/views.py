@@ -175,9 +175,9 @@ def alta_medicamento(request):
         lote = request.POST.get("lote")
         fecha_ingreso = request.POST.get("fecha_ingreso")
         deposito_id = request.POST.get("deposito")
-        fecha_dispensa = request.POST.get("fecha_dispensa")
-        qr = request.POST.get("qr")
-        cod_barra = request.POST.get("cod_barra")
+        fecha_dispensa = request.POST.get("fecha_dispensa") or None
+        """qr = request.POST.get("qr")
+        cod_barra = request.POST.get("cod_barra")"""
         estado_id = request.POST.get("id_estado")
         refrigeracion = request.POST.get("refrigeracion")
         nivel_id = request.POST.get("id_nivel_de_riesgo")
@@ -191,8 +191,6 @@ def alta_medicamento(request):
             fecha_ingreso=fecha_ingreso,
             id_deposito_id=deposito_id,
             fecha_dispensa=fecha_dispensa or None,
-            qr=qr or None,
-            cod_barra=cod_barra,
             id_estado_id=estado_id,
             refrigeracion_id=refrigeracion,
             id_nivel_de_riesgo_id=nivel_id,
@@ -237,9 +235,9 @@ def modificaciones_medicamento(request, id_medicamento):
         medicamento.lote = request.POST.get("lote")
         medicamento.fecha_ingreso = request.POST.get("fecha_ingreso")
         medicamento.id_deposito_id = request.POST.get("deposito")
-        medicamento.fecha_dispensa = request.POST.get("fecha_dispensa")
-        medicamento.qr = request.POST.get("qr") or None
-        medicamento.cod_barra = request.POST.get("cod_barra")
+        medicamento.fecha_dispensa = request.POST.get("fecha_dispensa")or None
+        """medicamento.qr = request.POST.get("qr") or None
+        medicamento.cod_barra = request.POST.get("cod_barra")"""
         medicamento.id_estado_id = request.POST.get("id_estado")
         medicamento.refrigeracion_id = request.POST.get("refrigeracion")
         medicamento.id_nivel_de_riesgo_id = request.POST.get("id_nivel_de_riesgo")
@@ -268,35 +266,6 @@ def modificaciones_medicamento(request, id_medicamento):
 # --- Hueco / Supervisor ---
 # Estas vistas existen en urls.py, pero en tu views.py no estaban implementadas.
 # Se agregan implementaciones mínimas para que el proyecto inicie.
-
-
-def lista_hueco(request):
-    huecos = Hueco.objects.all()
-    return render(request, "lista_hueco.html", {"huecos": huecos})
-
-
-def alta_hueco(request):
-    if request.method == "POST":
-        Hueco.objects.create(descripcion=request.POST.get("descripcion", ""))
-        return redirect("lista_hueco")
-    return render(request, "alta_hueco.html")
-
-
-def eliminacion_hueco(request, id_hueco):
-    hueco = Hueco.objects.get(id_hueco=id_hueco)
-    if request.method == "POST":
-        hueco.delete()
-        return redirect("lista_hueco")
-    return render(request, "eliminacion_hueco.html", {"hueco": hueco})
-
-
-def modificaciones_hueco(request, id_hueco):
-    hueco = Hueco.objects.get(id_hueco=id_hueco)
-    if request.method == "POST":
-        hueco.descripcion = request.POST.get("descripcion", hueco.descripcion)
-        hueco.save()
-        return redirect("lista_hueco")
-    return render(request, "modificacion_hueco.html", {"hueco": hueco})
 
 
 def lista_supervisor(request):
